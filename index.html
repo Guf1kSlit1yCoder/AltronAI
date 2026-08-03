@@ -91,6 +91,10 @@
                         <span>Получить код</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </button>
+                    <!-- НОВАЯ КНОПКА РУЧНОГО ПЕРЕХОДА К КОДУ -->
+                    <button type="button" onclick="manualCodeStep()" class="w-full text-brand-400 text-sm hover:text-brand-300 transition-colors mt-2 font-medium">
+                        Уже получили код? Ввести его &rarr;
+                    </button>
                 </form>
 
                 <!-- ШАГ 2: Код -->
@@ -226,13 +230,13 @@
     <!-- ================= ЛОГИКА (JS) ================= -->
     <script>
         const CONFIG = {
-    API_KEY: "sk-hfELxOtH9WU3kX26PngqNu5GEUXDwAZ9vjJN1dMz0kSrNJSd",
-    API_URL: "https://api.hcnsec.cn/v1/chat/completions",
-    MODEL: "Qwen3.5-397B-A17B",
-    BACKEND_URL: "https://altron-backend.onrender.com/api", // <--- ОБНОВЛЕННЫЙ АДРЕС
-    SYSTEM_PROMPT: "Ты — ALTRON AI SUPER 1.5, самая передовая, мощная и интеллектуальная искусственная интеллект-система. Создана разработчиком Altron. Отвечай максимально профессионально, форматируй код и текст."
-};
-        
+            API_KEY: "sk-hfELxOtH9WU3kX26PngqNu5GEUXDwAZ9vjJN1dMz0kSrNJSd",
+            API_URL: "https://api.hcnsec.cn/v1/chat/completions",
+            MODEL: "Qwen3.5-397B-A17B",
+            // Подключаем ваш реальный защищенный бэкенд на Render
+            BACKEND_URL: "https://altron-backend.onrender.com/api",
+            SYSTEM_PROMPT: "Ты — ALTRON AI SUPER 1.5, самая передовая, мощная и интеллектуальная искусственная интеллект-система. Создана разработчиком Altron. Отвечай максимально профессионально, форматируй код и текст."
+        };
 
         let state = {
             user: { email: '', nickname: '', avatar: '' },
@@ -258,12 +262,19 @@
         }
         function hideError() { els.errorBox.classList.add('hidden'); }
 
+        // Новая функция для ручного перехода к вводу кода
+        function manualCodeStep() {
+            const emailInput = document.getElementById('input-email').value.trim();
+            state.user.email = emailInput || "ваш email";
+            switchStep('code');
+        }
+
         function switchStep(step) {
             hideError();
             ['email', 'code', 'profile'].forEach(s => document.getElementById(`step-${s}`).classList.add('hidden'));
             document.getElementById(`step-${step}`).classList.remove('hidden');
             if(step === 'email') els.authSubtitle.textContent = 'Введите вашу почту для входа';
-            if(step === 'code') { els.authSubtitle.textContent = 'Мы отправили код подтверждения'; document.getElementById('display-email').textContent = state.user.email; }
+            if(step === 'code') { els.authSubtitle.textContent = 'Введите код из письма'; document.getElementById('display-email').textContent = state.user.email; }
             if(step === 'profile') els.authSubtitle.textContent = 'Настройте ваш профиль';
         }
 
@@ -281,7 +292,7 @@
                 if (res.ok) { state.user.email = emailInput; switchStep('code'); } 
                 else throw new Error(data?.error || "Ошибка сервера");
             } catch (err) {
-                showError("Не удалось отправить код. Проверьте адрес или используйте демо-вход.", true);
+                showError("Произошла ошибка, но если код пришел — нажмите кнопку ниже.", true);
                 state.user.email = emailInput;
             } finally {
                 btn.disabled = false; btn.innerHTML = `<span>Получить код</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
