@@ -226,13 +226,13 @@
     <!-- ================= ЛОГИКА (JS) ================= -->
     <script>
         const CONFIG = {
-            API_KEY: "sk-hfELxOtH9WU3kX26PngqNu5GEUXDwAZ9vjJN1dMz0kSrNJSd",
-            API_URL: "https://api.hcnsec.cn/v1/chat/completions",
-            MODEL: "Qwen3.5-397B-A17B",
-            // Подключаем ваш реальный защищенный бэкенд на WispByte
-            BACKEND_URL: "https://AltronAl.freesrv.com/api",
-            SYSTEM_PROMPT: "Ты — ALTRON AI SUPER 1.5, самая передовая, мощная и интеллектуальная искусственная интеллект-система. Создана разработчиком Altron. Отвечай максимально профессионально, форматируй код и текст."
-        };
+    API_KEY: "sk-hfELxOtH9WU3kX26PngqNu5GEUXDwAZ9vjJN1dMz0kSrNJSd",
+    API_URL: "https://api.hcnsec.cn/v1/chat/completions",
+    MODEL: "Qwen3.5-397B-A17B",
+    BACKEND_URL: "https://altron-backend.onrender.com/api", // <--- ОБНОВЛЕННЫЙ АДРЕС
+    SYSTEM_PROMPT: "Ты — ALTRON AI SUPER 1.5, самая передовая, мощная и интеллектуальная искусственная интеллект-система. Создана разработчиком Altron. Отвечай максимально профессионально, форматируй код и текст."
+};
+        
 
         let state = {
             user: { email: '', nickname: '', avatar: '' },
