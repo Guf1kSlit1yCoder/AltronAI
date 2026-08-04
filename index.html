@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>ALTRON AI - Super Interface</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Плеер для Анимированных Эмодзи (Lottie) -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 500: '#6366f1', 600: '#4f46e5' },
+                        surface: { 100: 'var(--surface-100)', 200: 'var(--surface-200)', 300: 'var(--surface-300)' },
+                        border: 'var(--border-color)',
+                        text: { main: 'var(--text-main)', muted: 'var(--text-muted)' }
+                    },
+                    fontFamily: { sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'] },
+                    animation: {
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                    },
+                    keyframes: {
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        popIn: { '0%': { opacity: '0', transform: 'scale(0.95)' }, '100%': { opacity: '1', transform: 'scale(1)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --bg-body: #0a0a0a;
+            --surface-100: #0a0a0a; 
+            --surface-200: #141414;
+            --surface-300: #1f1f1f;
+            --border-color: #262626;
+            --text-main: #ededed;
+            --text-muted: #a3a3a3;
+            --glass-blur: blur(0px);
+            --bubble-user: #1f1f1f;
+            --input-bg: #141414;
+            --code-bg: #000000;
+        }
+
+        body.theme-glass {
+            --bg-body: #050505;
+            --surface-100: rgba(10, 10, 10, 0.45);
+            --surface-200: rgba(20, 20, 20, 0.45);
+            --surface-300: rgba(30, 30, 30, 0.55);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(24px);
+            --bubble-user: rgba(255, 255, 255, 0.06);
+            --input-bg: rgba(20, 20, 20, 0.6);
+            --code-bg: rgba(0, 0, 0, 0.7);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); 
+            overflow: hidden; margin: 0; padding: 0; font-weight: 500; 
+            -webkit-font-smoothing: antialiased; transition: background-color 0.5s ease;
+        }
+
+        #glass-background {
+            position: fixed; inset: 0; z-index: -1; opacity: 0;
+            background: radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15), transparent 40%),
+                        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15), transparent 40%);
+            transition: opacity 0.8s ease; pointer-events: none;
+        }
+        body.theme-glass #glass-background { opacity: 1; }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        .app-h-dvh { height: 100vh; height: 100dvh; }
+
+        .glass-panel { background: var(--surface-100); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-color: var(--border-color); }
+        .glass-sidebar { background: var(--surface-100); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-right: 1px solid var(--border-color); }
+        
+        .user-message-bubble { background: var(--bubble-user); border: 1px solid var(--border-color); border-radius: 20px 20px 4px 20px; padding: 12px 18px; display: inline-block; max-width: 100%; backdrop-filter: var(--glass-blur); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        /* Markdown Стили */
+        .markdown-body { font-size: 15px; font-weight: 400; line-height: 1.6; color: var(--text-main); }
+        .markdown-body strong, .markdown-body b { font-weight: 600; color: #ffffff; }
+        .markdown-body p { margin-bottom: 0.8rem; }
+        .markdown-body p:last-child { margin-bottom: 0; }
+        .markdown-body pre { background: var(--code-bg); border-radius: 12px; padding: 0; margin: 16px 0; border: 1px solid var(--border-color); font-size: 14px; overflow: hidden; backdrop-filter: var(--glass-blur); }
+        .markdown-body code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+        .markdown-body .inline-code { background: var(--surface-300); padding: 2px 6px; border-radius: 6px; font-size: 13px; color: #e2e8f0; border: 1px solid var(--border-color); }
+        .markdown-body ul { list-style-type: disc; margin-left: 20px; margin-bottom: 12px; }
+        .markdown-body ol { list-style-type: decimal; margin-left: 20px; margin-bottom: 12px; }
+        .markdown-body li { margin-bottom: 6px; padding-left: 4px; }
+        .markdown-body a { color: #818cf8; text-decoration: none; border-bottom: 1px solid transparent; transition: border 0.2s; }
+        .markdown-body a:hover { border-bottom-color: #818cf8; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 14px; }
+        .markdown-body th, .markdown-body td { border: 1px solid var(--border-color); padding: 10px 14px; }
+        .markdown-body th { background: var(--surface-300); font-weight: 600; text-align: left; }
+
+        .chat-input-wrapper { background: var(--input-bg); border-radius: 24px; border: 1px solid var(--border-color); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+        .chat-input-wrapper:focus-within { border-color: rgba(99, 102, 241, 0.5); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.1); background: var(--surface-200); }
+        .chat-input-textarea { background: transparent; border: none; outline: none; color: var(--text-main); resize: none; max-height: 200px; padding: 16px 0; line-height: 1.5; font-size: 15px; font-weight: 400; width: 100%; }
+        .chat-input-textarea::placeholder { color: var(--text-muted); }
+        
+        .nav-item, .history-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .nav-item:hover, .history-item:hover { background: var(--surface-200); color: var(--text-main); }
+        .history-item.active { background: var(--surface-200); color: var(--text-main); font-weight: 600; }
+        
+        .action-btn { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; cursor: pointer; border: none; background: transparent; color: var(--text-muted); }
+        .action-btn:hover { background: var(--surface-300); color: var(--text-main); }
+        .send-btn-active { background: #fff !important; color: #000 !important; }
+
+        /* Модальные Окна и Формы Авторизации */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--surface-100); border: 1px solid var(--border-color); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border-radius: 24px; width: 90%; max-width: 520px; max-height: 90vh; overflow-y: auto; transform: scale(0.95) translateY(20px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; backdrop-filter: var(--glass-blur); }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); opacity: 1; }
+
+        #auth-overlay { position: fixed; inset: 0; z-index: 9999; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s; background-image: radial-gradient(circle at top right, rgba(99,102,241,0.1), transparent 40%), radial-gradient(circle at bottom left, rgba(168,85,247,0.1), transparent 40%); }
+        .sliding-container { background: rgba(15,15,15,0.7); backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05); position: relative; overflow: hidden; width: 850px; max-width: 92%; min-height: 540px; }
+        .sliding-container h1 { margin: 0; color: #fff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+        .sliding-container p { font-size: 14px; line-height: 1.5; margin: 15px 0 25px; color: #a3a3a3; }
+        .sliding-container .form-container { position: absolute; top: 0; height: 100%; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sliding-container .form-container form { background: rgba(10,10,10,0.5); display: flex; flex-direction: column; padding: 0 45px; height: 100%; justify-content: center; align-items: center; text-align: center; }
+        .sliding-container input { background: rgba(30,30,30,0.6); color: #fff; border: 1px solid rgba(255,255,255,0.08); padding: 14px 18px; margin: 8px 0; width: 100%; border-radius: 14px; outline: none; transition: all 0.2s; font-size: 14px; }
+        .sliding-container input:focus { border-color: #6366f1; background: rgba(40,40,40,0.8); }
+        .sliding-container button.main-btn { border-radius: 14px; background: #fff; color: #000; font-size: 14px; font-weight: 700; padding: 14px 45px; transition: transform 0.1s, box-shadow 0.2s; margin-top: 20px; cursor: pointer; width: 100%; }
+        .sliding-container button.main-btn:hover { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .sliding-container button.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; color: #fff; padding: 14px 45px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        
+        .sign-in-container { left: 0; width: 50%; z-index: 2; }
+        .sign-up-container { left: 0; width: 50%; z-index: 1; opacity: 0; }
+        .overlay-container { position: absolute; top: 0; left: 50%; width: 50%; height: 100%; overflow: hidden; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
+        .overlay { background: linear-gradient(135deg, #1e1b4b, #0f0f14); color: #fff; position: relative; left: -100%; height: 100%; width: 200%; transform: translateY(0); transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .overlay-panel { position: absolute; top: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 40px; height: 100%; width: 50%; text-align: center; transform: translateY(0); transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .overlay-right { right: 0; transform: translateY(0); }
+        .overlay-left { transform: translateY(-20%); }
+
+        .sliding-container.right-panel-active .sign-in-container { transform: translateY(100%); }
+        .sliding-container.right-panel-active .overlay-container { transform: translateX(-100%); }
+        .sliding-container.right-panel-active .sign-up-container { transform: translateX(100%); opacity: 1; z-index: 5; }
+        .sliding-container.right-panel-active .overlay { transform: translateX(50%); }
+        .sliding-container.right-panel-active .overlay-left { transform: translateY(0); }
+        .sliding-container.right-panel-active .overlay-right { transform: translateY(20%); }
+
+        .mobile-toggle { display: none; color: #a3a3a3; font-size: 14px; text-decoration: underline; margin-top: 25px; cursor: pointer; }
+        @media (max-width: 768px) {
+            .sliding-container { min-height: 550px; border-radius: 0; max-width: 100%; width: 100%; height: 100%; border: none; }
+            .sliding-container .sign-in-container, .sliding-container .sign-up-container { width: 100%; left: 0; transition: opacity 0.4s; }
+            .sliding-container.right-panel-active .sign-in-container { transform: translateX(0); opacity: 0; z-index: 1; pointer-events: none; }
+            .sliding-container.right-panel-active .sign-up-container { transform: translateX(0); opacity: 1; z-index: 5; }
+            .sliding-container .overlay-container { display: none; }
+            .mobile-toggle { display: block; }
+        }
+        
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--surface-300); transition: .3s; border-radius: 24px; border: 1px solid var(--border-color); }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 2px; bottom: 2px; background-color: #fff; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .toggle-slider { background-color: #6366f1; border-color: #6366f1; }
+        input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        .avatar-upload-label { cursor: pointer; position: relative; display: inline-block; }
+        .avatar-upload-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; color: white; }
+        .avatar-upload-label:hover .avatar-upload-overlay { opacity: 1; }
+    </style>
+</head>
+<body class="theme-glass flex app-h-dvh w-full overflow-hidden">
+    <div id="glass-background"></div>
+
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <div id="auth-overlay">
+        <div id="auth-error-box" class="hidden mb-6 w-full max-w-lg p-4 bg-red-900/40 backdrop-blur-md border border-red-500/50 rounded-2xl flex items-center justify-center gap-3 animate-pop-in z-20 mx-4">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <p id="auth-error-message" class="text-sm text-red-200 font-medium text-center"></p>
+        </div>
+
+        <div class="sliding-container" id="sliding-container">
+            <div class="form-container sign-up-container">
+                <form id="form-signup" onsubmit="App.Auth.handleSignupSubmit(event)">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    </div>
+                    <h1>Создать аккаунт</h1>
+                    <span class="mt-2 text-gray-400">Синхронизация истории и настроек</span>
+                    <input type="text" id="reg-name" placeholder="Никнейм" required autocomplete="off" />
+                    <input type="email" id="reg-email" placeholder="Ваш Email" required autocomplete="email" />
+                    <button type="submit" id="btn-signup" class="main-btn">Зарегистрироваться</button>
+                    <a class="mobile-toggle" onclick="document.getElementById('sliding-container').classList.remove('right-panel-active')">Уже есть аккаунт? Войти</a>
+                </form>
+            </div>
+            
+            <div class="form-container sign-in-container">
+                <form id="form-signin" onsubmit="App.Auth.handleSigninSubmit(event)">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    </div>
+                    <h1>Авторизация</h1>
+                    <span class="mt-2 text-gray-400">Введите Email для получения кода доступа</span>
+                    <input type="email" id="login-email" placeholder="Ваш Email" required autocomplete="email" />
+                    <button type="submit" id="btn-signin" class="main-btn">Получить код</button>
+                    <a class="mobile-toggle" onclick="document.getElementById('sliding-container').classList.add('right-panel-active')">Нет аккаунта? Создать</a>
+                </form>
+            </div>
+            
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <svg class="mb-6" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                        <h1>С возвращением!</h1>
+                        <p>Войдите, чтобы продолжить работу в продвинутом интерфейсе ALTRON AI.</p>
+                        <button class="ghost mt-2" id="signIn">Войти по Email</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <svg class="mb-6" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                        <h1>Приветствуем!</h1>
+                        <p>Присоединяйтесь, чтобы ваши диалоги и настройки безопасно сохранялись.</p>
+                        <button class="ghost mt-2" id="signUp">Создать аккаунт</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-code" class="hidden w-full max-w-md bg-[#121212]/80 backdrop-blur-xl border border-white/10 rounded-[32px] p-8 md:p-10 shadow-2xl relative z-20 text-center animate-slide-up mx-4">
+            <div class="flex justify-center mb-6">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+            </div>
+            <h1 class="text-2xl font-bold text-white mb-2">Проверка почты</h1>
+            <p class="text-sm text-gray-400 mb-8 font-medium leading-relaxed">Мы отправили 6-значный код на <br><span id="display-email" class="text-white font-semibold"></span></p>
+            <form onsubmit="App.Auth.handleCodeSubmit(event)" class="space-y-5">
+                <input type="text" id="input-code" maxlength="6" placeholder="••••••" class="w-full bg-black/40 text-white border border-white/10 rounded-2xl px-4 py-4 text-center tracking-[0.75em] text-2xl font-bold outline-none focus:border-indigo-500 transition-all shadow-inner" required autocomplete="off">
+                <button type="submit" id="btn-code" class="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-2xl py-4 transition-all uppercase text-sm tracking-wider shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                    Подтвердить вход
+                </button>
+                <button type="button" onclick="App.Auth.backToAuthSlider()" class="w-full text-gray-500 text-sm hover:text-white transition-colors mt-2 font-medium">Изменить Email</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК (ВКЛЮЧАЕТ ПАНЕЛЬ ВЛАДЕЛЬЦА И ЗАГРУЗКУ LOTTIE) -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content flex flex-col p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-white">Настройки профиля</h2>
+                <button onclick="App.Settings.close()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <div class="flex flex-col items-center mb-6">
+                <label class="avatar-upload-label rounded-full" title="Изменить аватар">
+                    <img id="settings-avatar-preview" src="" class="w-24 h-24 rounded-full object-cover border-4 border-surface-300 shadow-xl bg-black">
+                    <div class="avatar-upload-overlay rounded-full">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    </div>
+                    <input type="file" id="settings-avatar-input" accept="image/jpeg, image/png, image/webp" class="hidden" onchange="App.Settings.handleAvatarSelect(event)">
+                </label>
+                <span class="text-xs text-gray-500 mt-3 font-medium">Нажмите на фото, чтобы выбрать файл</span>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Имя пользователя</label>
+                    <input type="text" id="settings-nickname" class="w-full bg-surface-200 border border-border rounded-xl px-4 py-3 text-white outline-none focus:border-brand-500 transition-colors" placeholder="Ваш никнейм">
+                </div>
+                
+                <!-- Анимированный статус (Lottie JSON) -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Премиум статус (Эмодзи)</label>
+                    <div class="flex items-center gap-3 bg-surface-200 p-2 pl-4 rounded-xl border border-border">
+                        <div id="settings-status-preview" class="w-8 h-8 flex items-center justify-center shrink-0">
+                            <!-- Сюда вставится Lottie player -->
+                        </div>
+                        <div class="flex-1 text-xs text-gray-400">Загрузите Lottie (.json)</div>
+                        <label class="px-4 py-2 bg-surface-300 hover:bg-surface-100 border border-border rounded-lg text-sm text-white cursor-pointer transition-colors">
+                            Выбрать
+                            <input type="file" accept=".json" class="hidden" onchange="App.Settings.handleStatusSelect(event)">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-surface-200 p-4 rounded-xl border border-border mt-2">
+                    <div>
+                        <div class="text-sm font-semibold text-white">Жидкое стекло (Glassmorphism)</div>
+                        <div class="text-xs text-gray-400 mt-1">Анимированный фон и размытие</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="settings-theme-toggle" onchange="App.Settings.toggleThemePreview(event)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- БЛОК ВЛАДЕЛЬЦА: УПРАВЛЕНИЕ DEV MODE -->
+                <div id="admin-panel-section" class="hidden pt-4 border-t border-border">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></div>
+                        <div class="text-sm font-bold text-red-400 uppercase tracking-wider">Панель Владельца (DEV)</div>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-3">Управление безлимитным ИИ и отключением цензуры:</p>
+                    <div id="admin-users-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-5 border-t border-border flex justify-end gap-3">
+                <button onclick="App.Settings.close()" class="px-5 py-2.5 rounded-xl font-semibold text-gray-300 hover:bg-surface-200 hover:text-white transition-colors">Отмена</button>
+                <button id="btn-save-settings" onclick="App.Settings.save()" class="px-6 py-2.5 bg-white hover:bg-gray-200 text-black rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)]">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ГЛАВНЫЙ ИНТЕРФЕЙС ЧАТА -->
+    <div id="chatgpt-app" class="flex w-full h-full opacity-0 transition-opacity duration-700 hidden relative z-10">
+        
+        <aside id="sidebar" class="glass-sidebar w-[280px] h-full flex flex-col flex-shrink-0 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative z-40 shadow-2xl md:shadow-none">
+            <div class="p-4 flex items-center justify-between border-b border-border">
+                <div class="font-bold text-[16px] px-2 flex items-center gap-2.5 cursor-pointer hover:text-white transition-colors text-text-main" onclick="App.Chat.createNewSession()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4V20M4 12H20"/></svg>
+                    <span>Новый чат</span>
+                </div>
+                <button class="p-2 bg-surface-200 hover:bg-surface-300 rounded-lg cursor-pointer transition-colors text-text-muted hover:text-white border border-border" onclick="App.UI.toggleMobileSidebar()">
+                    <svg class="md:hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <svg class="hidden md:block" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-3 py-4">
+                <div class="text-[11px] font-bold text-text-muted px-3 mb-3 uppercase tracking-widest">История диалогов</div>
+                <div id="history-container" class="flex flex-col gap-1"></div>
+            </div>
+
+            <div class="p-4 border-t border-border mt-auto bg-surface-100">
+                <div class="flex items-center gap-3 cursor-pointer hover:bg-surface-200 p-2 -mx-2 rounded-xl transition-colors" onclick="App.Settings.open()">
+                    <img id="ui-avatar" src="" class="w-10 h-10 rounded-full border border-border object-cover shadow-sm bg-black shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <div id="ui-nickname" class="text-sm font-bold text-white truncate">User</div>
+                            <div id="ui-status-container" class="shrink-0 flex items-center justify-center w-5 h-5"></div>
+                        </div>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <div class="text-[11px] font-medium text-text-muted">Профиль</div>
+                            <div id="ui-badge" class="hidden bg-red-500/20 text-red-400 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider border border-red-500/30">DEV</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="w-full text-left px-2 py-2 text-xs font-bold text-red-400 hover:text-red-300 transition-colors mt-2" onclick="App.Auth.logout()">Выйти из системы</button>
+            </div>
+        </aside>
+
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden backdrop-blur-sm" onclick="App.UI.toggleMobileSidebar()"></div>
+
+        <main class="flex-1 flex flex-col h-full relative min-w-0">
+            <header class="h-14 flex items-center justify-between px-4 md:hidden border-b border-border glass-panel z-20 shadow-sm">
+                <div class="flex items-center">
+                    <button onclick="App.UI.toggleMobileSidebar()" class="text-text-muted hover:text-white mr-3 p-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                    <div class="font-bold text-[15px] tracking-wide flex items-center gap-2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                        ALTRON AI
+                    </div>
+                </div>
+                <div class="flex items-center gap-2" onclick="App.Settings.open()">
+                    <div id="mobile-ui-status-container" class="shrink-0 flex items-center justify-center w-5 h-5"></div>
+                    <img id="mobile-ui-avatar" src="" class="w-8 h-8 rounded-full border border-border object-cover cursor-pointer">
+                </div>
+            </header>
+
+            <div id="chat-feed" class="flex-1 overflow-y-auto w-full scroll-smooth flex flex-col relative z-0">
+                <div id="welcome-screen" class="absolute inset-0 flex flex-col items-center justify-center p-6 animate-fade-in">
+                    <div class="w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(255,255,255,0.15)] border-4 border-surface-300">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-3 text-white tracking-tight text-center">ALTRON 1.5 SUPER</h2>
+                    <p class="text-text-muted text-center max-w-md">Задайте вопрос, отправьте код или файл для анализа.</p>
+                </div>
+                <div id="messages-list" class="w-full pb-36 pt-6 flex flex-col"></div>
+            </div>
+
+            <!-- ПОЛЕ ВВОДА -->
+            <div class="absolute bottom-0 left-0 w-full pt-10 pb-4 md:pb-6 px-4 md:px-8 z-10" style="background: linear-gradient(to top, var(--bg-body) 60%, transparent);">
+                <div class="max-w-3xl mx-auto w-full relative">
+                    <div class="chat-input-wrapper">
+                        <div id="file-preview-container" class="hidden flex gap-2 p-3 pb-0 overflow-x-auto"></div>
+                        <div class="flex items-end p-2 px-3 relative">
+                            <!-- Поддержка огромного количества форматов -->
+                            <input type="file" id="hidden-file-input" multiple accept="image/*,.txt,.js,.py,.html,.css,.json,.lua,.cpp,.c,.h,.java,.md,.ts,.jsx,.tsx" onchange="App.FileHandler.handleFileSelect(event)" class="hidden">
+                            <button class="action-btn mb-1.5" title="Прикрепить файл" onclick="document.getElementById('hidden-file-input').click()">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                            </button>
+                            <textarea id="message-input" placeholder="Сообщение ALTRON AI..." class="chat-input-textarea ml-3" rows="1" oninput="App.UI.autoResizeTextarea()" onkeydown="App.Chat.handleKeydown(event)"></textarea>
+                            <div class="flex items-center gap-1 mb-1.5 ml-2 flex-shrink-0">
+                                <button id="btn-voice-mode" class="action-btn" title="Голосовой ввод"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
+                                <button id="btn-send" class="action-btn hidden" onclick="App.Chat.sendMessage()" title="Отправить"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3 text-[11px] font-medium text-text-muted px-4 tracking-wide">
+                        ALTRON AI SUPER использует модель AnyModel DeepSeek-V4.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ПОДКЛЮЧЕНИЕ ОТДЕЛЬНОГО JS ФАЙЛА ЛОГИКИ -->
+    <script src="app.js"></script>
+</body>
+</html>
