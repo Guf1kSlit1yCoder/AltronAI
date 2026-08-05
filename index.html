@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALTRON AI - Super Interface</title>
+    <title>ALTRON AI - Будущее Впереди</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Плеер для Анимированных Эмодзи (Lottie) -->
@@ -95,7 +95,7 @@
         .send-btn-active { background: #fff !important; color: #000 !important; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content { background: #18191c; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 25px 60px -15px rgba(0,0,0,0.8); border-radius: 28px; width: 92%; max-width: 440px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; transform: scale(0.95) translateY(20px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; }
+        .modal-content { background: #18191c; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 25px 60px -15px rgba(0,0,0,0.8); border-radius: 28px; width: 92%; max-width: 440px; max-height: 95vh; display: flex; flex-direction: column; overflow: hidden; transform: scale(0.95) translateY(20px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); opacity: 1; }
         #auth-overlay { position: fixed; inset: 0; z-index: 9999; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s; background-image: radial-gradient(circle at top right, rgba(99,102,241,0.1), transparent 40%), radial-gradient(circle at bottom left, rgba(168,85,247,0.1), transparent 40%); }
         .sliding-container { background: rgba(15,15,15,0.7); backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05); position: relative; overflow: hidden; width: 850px; max-width: 92%; min-height: 540px; }
@@ -142,7 +142,7 @@
         
         /* Telegram Profile UI specific styles */
         .tg-card { background: #212228; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 14px 16px; }
-        .tg-action-btn { background: #2b2d36; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px 10px; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .tg-action-btn { background: #2b2d36; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 6px; color: #ffffff; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; width: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: center; }
         .tg-action-btn:hover { background: #353844; border-color: rgba(255,255,255,0.12); }
     </style>
 </head>
@@ -186,13 +186,13 @@
                     <div class="overlay-panel overlay-left">
                         <svg class="mb-6" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                         <h1>С возвращением!</h1>
-                        <p>Войдите, чтобы продолжить работу в продвинутом интерфейсе ALTRON AI.</p>
+                        <p>Войдите, чтобы продолжить работу </p>
                         <button type="button" class="ghost mt-2" id="signIn">Войти по Email</button>
                     </div>
                     <div class="overlay-panel overlay-right">
                         <svg class="mb-6" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                         <h1>Приветствуем!</h1>
-                        <p>Присоединяйтесь, чтобы ваши диалоги и настройки безопасно сохранялись.</p>
+                        <p>Присоединяйтесь, Используя наш сервис вы нам очень помогаете.</p>
                         <button type="button" class="ghost mt-2" id="signUp">Создать аккаунт</button>
                     </div>
                 </div>
@@ -217,12 +217,10 @@
     <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ В СТИЛЕ TELEGRAM -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
-            <!-- Шапка с фоном, увеличенная по длине до кнопок -->
-            <div id="settings-background-wrapper" class="relative w-full h-[310px] overflow-hidden shrink-0" style="background: radial-gradient(circle at center, #2d2645 0%, #151419 100%);">
+            <!-- Шапка с фоном -->
+            <div id="settings-background-wrapper" class="relative w-full h-[320px] overflow-hidden shrink-0" style="background: radial-gradient(circle at center, #2d2645 0%, #151419 100%);">
+                <!-- Фон баннера (изображение) -->
                 <img id="settings-background-preview" src="" class="w-full h-full object-cover hidden absolute inset-0 z-0">
-                
-                <!-- PNG-эмодзи / замочки на фоне с плавным градиентом прозрачности -->
-                <div id="banner-png-emojis-container" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
 
                 <!-- Кнопка закрытия -->
                 <button type="button" onclick="App.Settings.close()" class="absolute top-3 right-3 w-8 h-8 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors z-30">
@@ -239,49 +237,57 @@
                     <button type="button" id="btn-remove-background" onclick="App.Settings.removeBackground()" class="hidden px-2 py-1.5 bg-red-500/80 hover:bg-red-600 backdrop-blur-md rounded-xl text-xs font-semibold text-white transition-colors">Сбросить</button>
                 </div>
 
-                <!-- Содержимое внутри баннера (Аватар, Имя, ID и Большие кнопки) -->
-                <div class="absolute inset-0 pt-10 px-5 flex flex-col items-center z-20 pointer-events-auto">
-                    <!-- Аватар -->
-                    <label class="avatar-upload-label rounded-full relative inline-block cursor-pointer shadow-2xl mb-2" title="Изменить фото профиля">
-                        <img id="settings-avatar-preview" src="" class="w-24 h-24 rounded-full object-cover border-4 border-black/40 bg-black">
-                        <div class="avatar-upload-overlay rounded-full">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <!-- Содержимое внутри баннера (Аватар, Имя, ID сдвинуты вниз к трем кнопкам) -->
+                <div class="absolute inset-0 pt-12 px-4 flex flex-col items-center justify-between pb-3.5 z-20 pointer-events-auto">
+                    <!-- Верхняя зона пустая для баланса -->
+                    <div></div>
+
+                    <!-- Нижняя зона (Аватар + Имя + ID + Большие кнопки у самого низа баннера) -->
+                    <div class="flex flex-col items-center w-full">
+                        <div class="flex flex-col items-center mb-2">
+                            <!-- Аватар (ИСПРАВЛЕНО: жесткие фиксированные размеры w-20 h-20 и object-cover) -->
+                            <label class="avatar-upload-label rounded-full relative inline-block cursor-pointer shadow-2xl mb-1.5 shrink-0" title="Изменить фото профиля">
+                                <img id="settings-avatar-preview" src="" class="w-20 h-20 rounded-full object-cover border-4 border-black/40 bg-black block">
+                                <div class="avatar-upload-overlay rounded-full">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                </div>
+                                <input type="file" id="settings-avatar-input" accept="image/jpeg, image/png, image/webp" class="hidden" onchange="App.Settings.handleAvatarSelect(event)">
+                            </label>
+
+                            <!-- Имя и Статус -->
+                            <div class="flex items-center justify-center gap-1.5 mb-0.5 w-full">
+                                <h2 id="profile-display-name-title" class="text-base font-bold text-white tracking-tight truncate drop-shadow">Шелби Кфг</h2>
+                                <div id="settings-status-preview" class="w-5 h-5 flex items-center justify-center shrink-0"></div>
+                            </div>
+                            <div class="text-[11px] text-green-300 font-bold mb-0.5 flex items-center gap-1 drop-shadow">
+                                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> в сети
+                            </div>
+                            <div id="profile-id-display" class="text-[11px] text-white font-bold font-mono drop-shadow">ID: 7697867470, DC: 5</div>
                         </div>
-                        <input type="file" id="settings-avatar-input" accept="image/jpeg, image/png, image/webp" class="hidden" onchange="App.Settings.handleAvatarSelect(event)">
-                    </label>
 
-                    <!-- Имя и Статус -->
-                    <div class="flex items-center justify-center gap-2 mb-0.5 w-full">
-                        <h2 id="profile-display-name-title" class="text-lg font-bold text-white tracking-tight truncate drop-shadow">Шелби Кфг</h2>
-                        <div id="settings-status-preview" class="w-6 h-6 flex items-center justify-center shrink-0"></div>
-                    </div>
-                    <div class="text-[11px] text-green-300 font-medium mb-0.5 flex items-center gap-1 drop-shadow">
-                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> 1 в сети
-                    </div>
-                    <div id="profile-id-display" class="text-[11px] text-gray-300 mb-3 font-mono drop-shadow">ID: 7697867470, DC: 5</div>
-
-                    <!-- БОЛЬШИЕ КНОПКИ (Выбрать фото, Изменить, Настройки) -->
-                    <div class="flex items-center gap-2.5 w-full">
-                        <label class="tg-action-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                            <span>Выбрать фото</span>
-                            <input type="file" accept="image/*" class="hidden" onchange="App.Settings.handleAvatarSelect(event)">
-                        </label>
-                        <button type="button" onclick="document.getElementById('settings-nickname').focus()" class="tg-action-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            <span>Изменить</span>
-                        </button>
-                        <button type="button" onclick="App.Settings.openPreferencesModal()" class="tg-action-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                            <span>Настройки</span>
-                        </button>
+                        <!-- БОЛЬШИЕ КНОПКИ -->
+                        <div class="flex items-center gap-2 w-full max-w-[360px]">
+                            <label class="tg-action-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                                <span>Выбрать фото</span>
+                                <input type="file" accept="image/*" class="hidden" onchange="App.Settings.handleAvatarSelect(event)">
+                            </label>
+                            <button type="button" onclick="document.getElementById('settings-nickname').focus()" class="tg-action-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                <span>Изменить</span>
+                            </button>
+                            <button type="button" onclick="App.Settings.openPreferencesModal()" class="tg-action-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                <span>Настройки</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ЕДИНАЯ БОЛЬШАЯ КАРТОЧКА ДАННЫХ ВНИЗУ -->
+            <!-- ЕДИНАЯ КАРТОЧКА ДАННЫХ ВНИЗУ -->
             <div class="px-5 py-5 relative flex flex-col items-center overflow-y-auto flex-1 space-y-4">
-                <div class="w-full bg-[#212228] border border-white/5 rounded-2xl p-4 space-y-4 shadow-xl">
+                <div class="w-full bg-[#212228] border border-white/5 rounded-2xl p-4 space-y-3.5 shadow-xl">
                     <!-- Никнейм -->
                     <div class="space-y-1">
                         <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">Отображаемое имя</label>
@@ -296,6 +302,23 @@
                             <input type="text" id="settings-username" class="w-full bg-transparent border-0 text-white font-medium outline-none text-sm p-0 focus:ring-0" placeholder="username" autocapitalize="off" autocomplete="off">
                         </div>
                         <div id="settings-username-error" class="hidden text-xs text-red-400 mt-1 font-medium"></div>
+                    </div>
+                    <hr class="border-white/5">
+                    <!-- Описание / Био -->
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">О себе (Описание)</label>
+                            <button type="button" onclick="App.Settings.openProfileEmojiModal()" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 cursor-pointer">
+                                <span>+ Эмодзи</span>
+                            </button>
+                        </div>
+                        <textarea id="settings-bio" rows="2" class="w-full bg-transparent border-0 text-white font-medium outline-none text-sm p-0 resize-none focus:ring-0" placeholder="Расскажите о себе..."></textarea>
+                    </div>
+                    <hr class="border-white/5">
+                    <!-- Дата рождения -->
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">Дата рождения</label>
+                        <input type="date" id="settings-birthdate" class="w-full bg-transparent border-0 text-white font-medium outline-none text-sm p-0 focus:ring-0 cursor-pointer">
                     </div>
                     <hr class="border-white/5">
                     <!-- Анимированный статус -->
@@ -321,13 +344,12 @@
                     <div id="admin-users-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
                     
                     <div class="pt-3 border-t border-border">
-                        <div class="text-xs font-bold text-white uppercase tracking-wider mb-1">Загрузка PNG иконок для баннера (до 10 файлов)</div>
-                        <p class="text-[11px] text-text-muted mb-2">Загрузите PNG картинки, которые будут расставлены вокруг аватара в виде замочков.</p>
+                        <div class="text-xs font-bold text-white uppercase tracking-wider mb-1">Загрузка JSON Lottie эмодзи</div>
+                        <p class="text-[11px] text-text-muted mb-2">Загрузите `.json` файлы анимации, чтобы они появились в галерее для всех пользователей.</p>
                         <label class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 rounded-xl text-xs font-bold text-white cursor-pointer transition-colors text-center block shadow-lg shadow-brand-500/20">
-                            Выбрать PNG иконки
-                            <input type="file" id="admin-png-multi-input" accept="image/png,image/webp" multiple class="hidden" onchange="App.Settings.handleAdminPngUpload(event)">
+                            Выбрать JSON файлы эмодзи
+                            <input type="file" id="admin-json-lottie-input" accept=".json,application/json" multiple class="hidden" onchange="App.Settings.handleAdminJsonUpload(event)">
                         </label>
-                        <div id="admin-png-list" class="flex flex-wrap gap-2 max-h-32 overflow-y-auto mt-3"></div>
                     </div>
                 </div>
 
@@ -386,6 +408,34 @@
             <div id="lottie-gallery-grid" class="grid grid-cols-4 gap-3 min-h-[80px] max-h-[50vh] overflow-y-auto pr-1"></div>
             <div id="lottie-gallery-empty" class="hidden text-center text-sm text-gray-500 py-8">Владелец пока не добавил ни одного эмодзи</div>
             <div id="lottie-gallery-loading" class="text-center text-sm text-gray-500 py-8">Загрузка...</div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭМОДЗИ ДЛЯ БИО (О СЕБЕ) -->
+    <div id="profile-emoji-modal" class="modal-overlay">
+        <div class="modal-content p-6" style="max-width: 420px; max-height: 70vh;">
+            <div class="flex items-center justify-between mb-5">
+                <h2 class="text-lg font-bold text-white">Добавить эмодзи в описание</h2>
+                <button type="button" onclick="App.Settings.closeProfileEmojiModal()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div id="profile-emoji-grid" class="grid grid-cols-4 gap-3 min-h-[80px] max-h-[50vh] overflow-y-auto pr-1"></div>
+            <div id="profile-emoji-empty" class="hidden text-center text-sm text-gray-500 py-8">Нет доступных эмодзи</div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭМОДЗИ ДЛЯ ЧАТА -->
+    <div id="chat-emoji-modal" class="modal-overlay">
+        <div class="modal-content p-6" style="max-width: 420px; max-height: 70vh;">
+            <div class="flex items-center justify-between mb-5">
+                <h2 class="text-lg font-bold text-white">Вставить анимированный эмодзи</h2>
+                <button type="button" onclick="App.Chat.closeEmojiModal()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div id="chat-emoji-grid" class="grid grid-cols-4 gap-3 min-h-[80px] max-h-[50vh] overflow-y-auto pr-1"></div>
+            <div id="chat-emoji-empty" class="hidden text-center text-sm text-gray-500 py-8">Нет доступных эмодзи</div>
         </div>
     </div>
 
@@ -459,6 +509,9 @@
                             <button type="button" class="action-btn mb-1.5" title="Прикрепить файл" onclick="document.getElementById('hidden-file-input').click()">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                             </button>
+                            <button type="button" class="action-btn mb-1.5 ml-1" title="Вставить анимированный эмодзи" onclick="App.Chat.openEmojiModal()">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                            </button>
                             <textarea id="message-input" placeholder="Сообщение ALTRON AI..." class="chat-input-textarea ml-3" rows="1" oninput="App.UI.autoResizeTextarea()" onkeydown="App.Chat.handleKeydown(event)"></textarea>
                             <div class="flex items-center gap-1 mb-1.5 ml-2 flex-shrink-0">
                                 <button type="button" id="btn-voice-mode" class="action-btn" title="Голосовой ввод"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
@@ -467,7 +520,7 @@
                         </div>
                     </div>
                     <div class="text-center mt-3 text-[11px] font-medium text-text-muted px-4 tracking-wide">
-                        ALTRON AI SUPER использует модель AnyModel DeepSeek-V4.
+                        Проверяйте ответы нейросети часто ошибаются!
                     </div>
                 </div>
             </div>
@@ -500,20 +553,6 @@
             { name: 'Pure Carbon', bg: 'linear-gradient(135deg, #1f1f1f 0%, #0a0a0a 100%)' }
         ];
 
-        // Стандартные иконки замочков (если администратор не загрузил свои PNG)
-        const DEFAULT_LOCK_ICONS = [
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.18',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.12',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.22',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.15',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.10',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.20',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.14',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.18',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.12',
-            'https://api.iconify.design/lucide:lock.svg?color=%23ffffff&opacity=0.16'
-        ];
-
         const App = {
             init: function() {
                 const signUpButton = document.getElementById('signUp');
@@ -544,9 +583,15 @@
                 if(!user) return;
                 document.getElementById('settings-nickname').value = user.nickname || 'Шелби Кфг';
                 document.getElementById('settings-username').value = user.username || '';
+                document.getElementById('settings-bio').value = user.bio || '';
+                document.getElementById('settings-birthdate').value = user.birthdate || '';
                 document.getElementById('profile-display-name-title').textContent = user.nickname || 'Шелби Кфг';
                 document.getElementById('settings-username-error').classList.add('hidden');
-                document.getElementById('settings-avatar-preview').src = user.avatar || '';
+                
+                // Исправление аватара: установка дефолтного значения если отсутствует
+                const avatarImg = document.getElementById('settings-avatar-preview');
+                avatarImg.src = user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.nickname || 'User'}&backgroundColor=121212`;
+                
                 document.getElementById('settings-theme-toggle').checked = (user.theme === 'glass');
 
                 const bgPreview = document.getElementById('settings-background-preview');
@@ -564,8 +609,7 @@
                 }
                 document.getElementById('btn-remove-background').classList.toggle('hidden', !user.profileBackground);
 
-                this.renderBannerPngEmojis(bgWrapper.querySelector('#banner-png-emojis-container'));
-                this.renderLottiePreview(document.getElementById('settings-status-preview'), user.statusEmoji, 24);
+                this.renderLottiePreview(document.getElementById('settings-status-preview'), user.statusEmoji, 20);
                 document.getElementById('btn-remove-status').classList.toggle('hidden', !user.statusEmoji);
                 
                 this.pendingAvatarBase64 = null;
@@ -577,7 +621,6 @@
                 if (user.email && user.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
                     document.getElementById('admin-panel-section').classList.remove('hidden');
                     this.loadAdminUsersList();
-                    this.loadAdminPngList();
                 } else {
                     document.getElementById('admin-panel-section').classList.add('hidden');
                 }
@@ -615,35 +658,6 @@
             closePreferencesModal: function() {
                 document.getElementById('preferences-modal').classList.remove('active');
             },
-            renderBannerPngEmojis: function(container) {
-                if (!container) return;
-                container.innerHTML = '';
-                let icons = DEFAULT_LOCK_ICONS;
-                try {
-                    const customIcons = JSON.parse(localStorage.getItem('altron_admin_png_icons') || '[]');
-                    if (customIcons && customIcons.length > 0) icons = customIcons;
-                } catch(e) {}
-
-                // Точки позиционирования вокруг аватарки в стиле скриншота (разная прозрачность)
-                const positions = [
-                    { top: '12%', left: '15%' }, { top: '8%', left: '38%' }, { top: '10%', left: '62%' }, { top: '14%', left: '85%' },
-                    { top: '35%', left: '6%' },  { top: '28%', left: '88%' },
-                    { top: '55%', left: '10%' }, { top: '48%', left: '90%' },
-                    { top: '75%', left: '20%' }, { top: '70%', left: '80%' }
-                ];
-
-                icons.forEach((src, idx) => {
-                    const pos = positions[idx % positions.length];
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.className = 'absolute w-6 h-6 object-contain pointer-events-none transition-all';
-                    img.style.top = pos.top;
-                    img.style.left = pos.left;
-                    // Плавный градиент прозрачности (opacity) для создания эффекта глубины как на фото
-                    img.style.opacity = (0.1 + (idx % 5) * 0.04).toFixed(2);
-                    container.appendChild(img);
-                });
-            },
             toggleThemePreview: function(e) {
                 this.applyTheme(e.target.checked ? 'glass' : 'solid');
             },
@@ -658,7 +672,7 @@
                 if (!container) return;
                 container.innerHTML = '';
                 if (!animationData) return;
-                const size = (sizePx || 24) + 'px';
+                const size = (sizePx || 20) + 'px';
                 let jsonStr = '';
                 if (typeof animationData === 'object' && animationData !== null) {
                     jsonStr = JSON.stringify(animationData);
@@ -778,46 +792,83 @@
             selectStatusFromGallery: function(animationData) {
                 this.pendingStatusData = animationData;
                 this.statusRemoved = false;
-                this.renderLottiePreview(document.getElementById('settings-status-preview'), animationData, 24);
+                this.renderLottiePreview(document.getElementById('settings-status-preview'), animationData, 20);
                 document.getElementById('btn-remove-status').classList.remove('hidden');
                 this.closeLottieGallery();
             },
             closeLottieGallery: function() {
                 document.getElementById('lottie-gallery-modal').classList.remove('active');
             },
-            handleAdminPngUpload: async function(e) {
+            openProfileEmojiModal: async function() {
+                const modal = document.getElementById('profile-emoji-modal');
+                const grid = document.getElementById('profile-emoji-grid');
+                const empty = document.getElementById('profile-emoji-empty');
+                grid.innerHTML = '';
+                try {
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/lottie-emojis`);
+                    const data = await res.json();
+                    if (data.success && data.emojis && data.emojis.length) {
+                        grid.classList.remove('hidden');
+                        empty.classList.add('hidden');
+                        data.emojis.forEach(emoji => {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'flex flex-col items-center gap-1 bg-surface-200 hover:bg-surface-300 border border-border rounded-xl p-2.5 transition-colors cursor-pointer';
+                            const preview = document.createElement('div');
+                            preview.style.width = '32px'; preview.style.height = '32px';
+                            btn.appendChild(preview);
+                            this.renderLottiePreview(preview, emoji.animationData, 32);
+                            const nameSpan = document.createElement('span');
+                            nameSpan.className = 'text-[9px] text-gray-400 truncate w-full text-center';
+                            nameSpan.textContent = emoji.name;
+                            btn.appendChild(nameSpan);
+                            btn.onclick = () => {
+                                this.insertBioEmoji(emoji.animationData);
+                                this.closeProfileEmojiModal();
+                            };
+                            grid.appendChild(btn);
+                        });
+                    } else {
+                        grid.classList.add('hidden');
+                        empty.classList.remove('hidden');
+                    }
+                } catch(e) {
+                    grid.classList.add('hidden');
+                    empty.classList.remove('hidden');
+                }
+                modal.classList.add('active');
+            },
+            closeProfileEmojiModal: function() {
+                document.getElementById('profile-emoji-modal').classList.remove('active');
+            },
+            insertBioEmoji: function(animationData) {
+                const input = document.getElementById('settings-bio');
+                let jsonStr = typeof animationData === 'object' ? JSON.stringify(animationData) : animationData;
+                const tag = `[LOTTIE:${jsonStr}]`;
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                const val = input.value;
+                input.value = val.substring(0, start) + tag + val.substring(end);
+                input.selectionStart = input.selectionEnd = start + tag.length;
+                input.focus();
+            },
+            handleAdminJsonUpload: async function(e) {
                 const files = Array.from(e.target.files);
                 e.target.value = '';
                 if (!files || files.length === 0) return;
-                const readerPromises = files.slice(0, 10).map(file => {
-                    return new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (ev) => resolve(ev.target.result);
-                        reader.readAsDataURL(file);
-                    });
-                });
-                const base64List = await Promise.all(readerPromises);
-                localStorage.setItem('altron_admin_png_icons', JSON.stringify(base64List));
-                this.loadAdminPngList();
-                this.renderBannerPngEmojis(document.getElementById('settings-background-wrapper').querySelector('#banner-png-emojis-container'));
-            },
-            loadAdminPngList: function() {
-                const container = document.getElementById('admin-png-list');
-                if(!container) return;
-                container.innerHTML = '';
-                try {
-                    const icons = JSON.parse(localStorage.getItem('altron_admin_png_icons') || '[]');
-                    if (icons.length === 0) {
-                        container.innerHTML = '<div class="text-[11px] text-gray-500">Используются стандартные замочки</div>';
-                        return;
-                    }
-                    icons.forEach((src, idx) => {
-                        const img = document.createElement('img');
-                        img.src = src;
-                        img.className = 'w-8 h-8 rounded object-cover border border-border bg-black';
-                        container.appendChild(img);
-                    });
-                } catch(e) {}
+                const user = App.Storage.getUser();
+                for (let file of files) {
+                    try {
+                        const text = await file.text();
+                        const jsonObj = JSON.parse(text);
+                        await fetch(`${CONFIG.BACKEND_URL}/admin/add-lottie-emoji`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ adminEmail: user.email, name: file.name.replace('.json',''), animationData: jsonObj })
+                        });
+                    } catch(err) {}
+                }
+                alert('Эмодзи успешно загружены на сервер!');
             },
             save: async function() {
                 const user = App.Storage.getUser();
@@ -825,6 +876,8 @@
                 const btn = document.getElementById('btn-save-settings');
                 const newNickname = document.getElementById('settings-nickname').value.trim();
                 const newUsername = document.getElementById('settings-username').value.trim();
+                const newBio = document.getElementById('settings-bio').value.trim();
+                const newBirthdate = document.getElementById('settings-birthdate').value;
                 const newTheme = document.getElementById('settings-theme-toggle').checked ? 'glass' : 'solid';
                 const errorEl = document.getElementById('settings-username-error');
                 errorEl.classList.add('hidden');
@@ -834,7 +887,9 @@
                     const payload = {
                         email: user.email,
                         nickname: newNickname || user.nickname,
-                        username: newUsername
+                        username: newUsername,
+                        bio: newBio,
+                        birthdate: newBirthdate
                     };
                     if (this.pendingAvatarBase64) payload.avatar = this.pendingAvatarBase64;
                     if (this.pendingBackgroundBg !== null) payload.profileBackground = this.pendingBackgroundBg;
@@ -1111,8 +1166,8 @@
             },
             updateUIProfile: function(userData) {
                 document.getElementById('ui-nickname').textContent = userData.nickname || 'Шелби Кфг';
-                if(document.getElementById('ui-avatar')) document.getElementById('ui-avatar').src = userData.avatar;
-                if(document.getElementById('mobile-ui-avatar')) document.getElementById('mobile-ui-avatar').src = userData.avatar;
+                if(document.getElementById('ui-avatar')) document.getElementById('ui-avatar').src = userData.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${userData.nickname || 'User'}&backgroundColor=121212`;
+                if(document.getElementById('mobile-ui-avatar')) document.getElementById('mobile-ui-avatar').src = userData.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${userData.nickname || 'User'}&backgroundColor=121212`;
 
                 [document.getElementById('ui-status-container'), document.getElementById('mobile-ui-status-container')].forEach(c => {
                     if (c) App.Settings.renderLottiePreview(c, userData.statusEmoji, 20);
@@ -1220,6 +1275,63 @@
                     e.preventDefault();
                     this.sendMessage();
                 }
+            },
+            openEmojiModal: async function() {
+                const modal = document.getElementById('chat-emoji-modal');
+                const grid = document.getElementById('chat-emoji-grid');
+                const empty = document.getElementById('chat-emoji-empty');
+                grid.innerHTML = '';
+                try {
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/lottie-emojis`);
+                    const data = await res.json();
+                    if (data.success && data.emojis && data.emojis.length) {
+                        grid.classList.remove('hidden');
+                        empty.classList.add('hidden');
+                        data.emojis.forEach(emoji => {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'flex flex-col items-center gap-1 bg-surface-200 hover:bg-surface-300 border border-border rounded-xl p-2.5 transition-colors cursor-pointer';
+                            const preview = document.createElement('div');
+                            preview.style.width = '32px'; preview.style.height = '32px';
+                            btn.appendChild(preview);
+                            App.Settings.renderLottiePreview(preview, emoji.animationData, 32);
+                            const nameSpan = document.createElement('span');
+                            nameSpan.className = 'text-[9px] text-gray-400 truncate w-full text-center';
+                            nameSpan.textContent = emoji.name;
+                            btn.appendChild(nameSpan);
+                            btn.onclick = () => {
+                                this.insertEmojiIntoInput(emoji.animationData);
+                                this.closeEmojiModal();
+                            };
+                            grid.appendChild(btn);
+                        });
+                    } else {
+                        grid.classList.add('hidden');
+                        empty.classList.remove('hidden');
+                    }
+                } catch(e) {
+                    grid.classList.add('hidden');
+                    empty.classList.remove('hidden');
+                }
+                modal.classList.add('active');
+            },
+            closeEmojiModal: function() {
+                document.getElementById('chat-emoji-modal').classList.remove('active');
+            },
+            insertEmojiIntoInput: function(animationData) {
+                const input = document.getElementById('message-input');
+                let jsonStr = '';
+                if (typeof animationData === 'object') jsonStr = JSON.stringify(animationData);
+                else jsonStr = animationData;
+                
+                const emojiTag = `[LOTTIE:${jsonStr}]`;
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                const val = input.value;
+                input.value = val.substring(0, start) + emojiTag + val.substring(end);
+                input.selectionStart = input.selectionEnd = start + emojiTag.length;
+                input.focus();
+                App.UI.autoResizeTextarea();
             },
             sendMessage: async function() {
                 const input = document.getElementById('message-input');
@@ -1355,6 +1467,19 @@
             parseMarkdown: function(text) {
                 if (!text) return '';
                 let html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                
+                // Рендеринг Lottie-эмодзи внутри текста
+                html = html.replace(/\[LOTTIE:(.*?)\]/g, (match, jsonStr) => {
+                    let dataUrl = '';
+                    try {
+                        const parsed = JSON.parse(jsonStr);
+                        dataUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(parsed))));
+                    } catch(e) {
+                        dataUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(jsonStr)));
+                    }
+                    return `<span class="inline-flex items-center align-middle mx-1"><lottie-player src="${dataUrl}" autoplay loop style="width:26px;height:26px;display:inline-block;"></lottie-player></span>`;
+                });
+
                 html = html.replace(/```(.*?)?\n([\s\S]*?)```/g, (match, lang, code) => {
                     const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
                     const safeLang = lang || 'txt';
