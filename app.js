@@ -127,6 +127,13 @@ App.Settings = {
             const player = document.createElement('lottie-player');
             player.setAttribute('autoplay', '');
             player.setAttribute('loop', '');
+            // lottie-player перед рендером сам проверяет, что в корне JSON есть
+            // строго поля v/ip/op/layers/fr/w/h, и если хоть одного нет — сразу
+            // кидает error, даже не пытаясь отрисовать через lottie-web (а тот
+            // куда терпимее к формату). У наших файлов эта проверка ложно
+            // фейлилась, поэтому отключаем её и даём рендерить как есть.
+            player.disableCheck = true;
+            player.setAttribute('disable-check', '');
             player.style.width = size;
             player.style.height = size;
             player.addEventListener('error', () => showError('RENDER!'));
