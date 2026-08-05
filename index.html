@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALTRON AI - Будущее Впереди</title>
+    <title>ALTRON AI - Канвас и Обмен Кодом</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Плеер для Анимированных Эмодзи (Lottie) -->
@@ -139,11 +139,12 @@
         .avatar-upload-label { cursor: pointer; position: relative; display: inline-block; }
         .avatar-upload-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; color: white; }
         .avatar-upload-label:hover .avatar-upload-overlay { opacity: 1; }
-        
-        /* Telegram Profile UI specific styles */
         .tg-card { background: #212228; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 14px 16px; }
         .tg-action-btn { background: #2b2d36; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 6px; color: #ffffff; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; width: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: center; }
         .tg-action-btn:hover { background: #353844; border-color: rgba(255,255,255,0.12); }
+        
+        /* Canvas Workspace Styles */
+        #canvas-pane { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     </style>
 </head>
 <body class="app-h-dvh flex flex-col">
@@ -162,7 +163,7 @@
                         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                     </div>
                     <h1>Создать аккаунт</h1>
-                    <span class="mt-2 text-gray-400">Синхронизация истории и настроек</span>
+                    <span class="mt-2 text-gray-400">Синхронизация истории, настроек и чатов</span>
                     <input type="text" id="reg-name" placeholder="Никнейм" required autocomplete="off" />
                     <input type="email" id="reg-email" placeholder="Ваш Email" required autocomplete="email" />
                     <button type="submit" id="btn-signup" class="main-btn">Зарегистрироваться</button>
@@ -186,13 +187,13 @@
                     <div class="overlay-panel overlay-left">
                         <svg class="mb-6" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                         <h1>С возвращением!</h1>
-                        <p>Войдите, чтобы продолжить работу </p>
+                        <p>Войдите, чтобы продолжить работу</p>
                         <button type="button" class="ghost mt-2" id="signIn">Войти по Email</button>
                     </div>
                     <div class="overlay-panel overlay-right">
                         <svg class="mb-6" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                         <h1>Приветствуем!</h1>
-                        <p>Присоединяйтесь, Используя наш сервис вы нам очень помогаете.</p>
+                        <p>Присоединяйтесь к платформе нового поколения.</p>
                         <button type="button" class="ghost mt-2" id="signUp">Создать аккаунт</button>
                     </div>
                 </div>
@@ -208,7 +209,7 @@
             <p class="text-sm text-gray-400 mb-8 font-medium leading-relaxed">Мы отправили 6-значный код на <br><span id="display-email" class="text-white font-semibold"></span></p>
             <form id="form-code" onsubmit="App.Auth.handleCodeSubmit(event)" class="space-y-5">
                 <input type="text" id="input-code" maxlength="6" placeholder="••••••" class="w-full bg-black/40 text-white border border-white/10 rounded-2xl px-4 py-4 text-center tracking-[0.75em] text-2xl font-bold outline-none focus:border-indigo-500 transition-all shadow-inner" required autocomplete="off">
-                <button type="submit" id="btn-code" class="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-2xl py-4 transition-all uppercase text-sm tracking-wider shadow-[0_0_20px_rgba(255,255,255,0.1)]"> Подтвердить вход </button>
+                <button type="submit" id="btn-code" class="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-2xl py-4 transition-all uppercase text-sm tracking-wider shadow-[0_0_20px_rgba(255,255,255,0.1)]">Подтвердить вход</button>
                 <button type="button" onclick="App.Auth.backToAuthSlider()" class="w-full text-gray-500 text-sm hover:text-white transition-colors mt-2 font-medium">Изменить Email</button>
             </form>
         </div>
@@ -217,17 +218,11 @@
     <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ В СТИЛЕ TELEGRAM -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
-            <!-- Шапка с фоном -->
             <div id="settings-background-wrapper" class="relative w-full h-[320px] overflow-hidden shrink-0" style="background: radial-gradient(circle at center, #2d2645 0%, #151419 100%);">
-                <!-- Фон баннера (изображение) -->
                 <img id="settings-background-preview" src="" class="w-full h-full object-cover hidden absolute inset-0 z-0">
-
-                <!-- Кнопка закрытия -->
                 <button type="button" onclick="App.Settings.close()" class="absolute top-3 right-3 w-8 h-8 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors z-30">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
-
-                <!-- Верхние кнопки на баннере -->
                 <div class="absolute top-3 left-3 flex items-center gap-2 z-30">
                     <label class="px-3 py-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-xl text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-colors border border-white/10">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -236,16 +231,10 @@
                     </label>
                     <button type="button" id="btn-remove-background" onclick="App.Settings.removeBackground()" class="hidden px-2 py-1.5 bg-red-500/80 hover:bg-red-600 backdrop-blur-md rounded-xl text-xs font-semibold text-white transition-colors">Сбросить</button>
                 </div>
-
-                <!-- Содержимое внутри баннера (Аватар, Имя, ID сдвинуты вниз к трем кнопкам) -->
                 <div class="absolute inset-0 pt-12 px-4 flex flex-col items-center justify-between pb-3.5 z-20 pointer-events-auto">
-                    <!-- Верхняя зона пустая для баланса -->
                     <div></div>
-
-                    <!-- Нижняя зона (Аватар + Имя + ID + Большие кнопки у самого низа баннера) -->
                     <div class="flex flex-col items-center w-full">
                         <div class="flex flex-col items-center mb-2">
-                            <!-- Аватар (ИСПРАВЛЕНО: жесткие фиксированные размеры w-20 h-20 и object-cover) -->
                             <label class="avatar-upload-label rounded-full relative inline-block cursor-pointer shadow-2xl mb-1.5 shrink-0" title="Изменить фото профиля">
                                 <img id="settings-avatar-preview" src="" class="w-20 h-20 rounded-full object-cover border-4 border-black/40 bg-black block">
                                 <div class="avatar-upload-overlay rounded-full">
@@ -253,8 +242,6 @@
                                 </div>
                                 <input type="file" id="settings-avatar-input" accept="image/jpeg, image/png, image/webp" class="hidden" onchange="App.Settings.handleAvatarSelect(event)">
                             </label>
-
-                            <!-- Имя и Статус -->
                             <div class="flex items-center justify-center gap-1.5 mb-0.5 w-full">
                                 <h2 id="profile-display-name-title" class="text-base font-bold text-white tracking-tight truncate drop-shadow">Шелби Кфг</h2>
                                 <div id="settings-status-preview" class="w-5 h-5 flex items-center justify-center shrink-0"></div>
@@ -264,8 +251,6 @@
                             </div>
                             <div id="profile-id-display" class="text-[11px] text-white font-bold font-mono drop-shadow">ID: 7697867470, DC: 5</div>
                         </div>
-
-                        <!-- БОЛЬШИЕ КНОПКИ -->
                         <div class="flex items-center gap-2 w-full max-w-[360px]">
                             <label class="tg-action-btn">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
@@ -284,17 +269,13 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ЕДИНАЯ КАРТОЧКА ДАННЫХ ВНИЗУ -->
             <div class="px-5 py-5 relative flex flex-col items-center overflow-y-auto flex-1 space-y-4">
                 <div class="w-full bg-[#212228] border border-white/5 rounded-2xl p-4 space-y-3.5 shadow-xl">
-                    <!-- Никнейм -->
                     <div class="space-y-1">
                         <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">Отображаемое имя</label>
                         <input type="text" id="settings-nickname" class="w-full bg-transparent border-0 text-white font-medium outline-none text-sm p-0 focus:ring-0" placeholder="Ваше имя">
                     </div>
                     <hr class="border-white/5">
-                    <!-- Юзернейм -->
                     <div class="space-y-1">
                         <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">Имя пользователя (Юзернейм)</label>
                         <div class="relative flex items-center">
@@ -304,7 +285,6 @@
                         <div id="settings-username-error" class="hidden text-xs text-red-400 mt-1 font-medium"></div>
                     </div>
                     <hr class="border-white/5">
-                    <!-- Описание / Био -->
                     <div class="space-y-1">
                         <div class="flex items-center justify-between">
                             <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">О себе (Описание)</label>
@@ -315,13 +295,11 @@
                         <textarea id="settings-bio" rows="2" class="w-full bg-transparent border-0 text-white font-medium outline-none text-sm p-0 resize-none focus:ring-0" placeholder="Расскажите о себе..."></textarea>
                     </div>
                     <hr class="border-white/5">
-                    <!-- Дата рождения -->
                     <div class="space-y-1">
                         <label class="block text-[11px] font-bold text-text-muted uppercase tracking-wider">Дата рождения</label>
                         <input type="date" id="settings-birthdate" class="w-full bg-transparent border-0 text-white font-medium outline-none text-sm p-0 focus:ring-0 cursor-pointer">
                     </div>
                     <hr class="border-white/5">
-                    <!-- Анимированный статус -->
                     <div class="flex items-center justify-between">
                         <div>
                             <div class="text-sm font-semibold text-white">Анимированный статус</div>
@@ -334,7 +312,6 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ ВЛАДЕЛЬЦА (DEV) -->
                 <div id="admin-panel-section" class="hidden tg-card border-red-500/30 space-y-3 w-full">
                     <div class="flex items-center gap-2">
                         <div class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></div>
@@ -342,10 +319,9 @@
                     </div>
                     <p class="text-[11px] text-text-muted">Управление безлимитным ИИ и цензурой:</p>
                     <div id="admin-users-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
-                    
                     <div class="pt-3 border-t border-border">
                         <div class="text-xs font-bold text-white uppercase tracking-wider mb-1">Загрузка JSON Lottie эмодзи</div>
-                        <p class="text-[11px] text-text-muted mb-2">Загрузите `.json` файлы анимации, чтобы они появились в галерее для всех пользователей.</p>
+                        <p class="text-[11px] text-text-muted mb-2">Загрузите `.json` файлы анимации.</p>
                         <label class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 rounded-xl text-xs font-bold text-white cursor-pointer transition-colors text-center block shadow-lg shadow-brand-500/20">
                             Выбрать JSON файлы эмодзи
                             <input type="file" id="admin-json-lottie-input" accept=".json,application/json" multiple class="hidden" onchange="App.Settings.handleAdminJsonUpload(event)">
@@ -353,7 +329,6 @@
                     </div>
                 </div>
 
-                <!-- Кнопки сохранения -->
                 <div class="mt-2 flex items-center gap-3 w-full pb-2">
                     <button type="button" onclick="App.Settings.close()" class="flex-1 py-3 bg-[#2b2d36] hover:bg-[#353844] border border-white/5 rounded-xl font-semibold text-gray-300 hover:text-white transition-colors text-sm">Отмена</button>
                     <button type="button" id="btn-save-settings" onclick="App.Settings.save()" class="flex-1 py-3 bg-white hover:bg-gray-100 text-black rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] text-sm">Сохранить</button>
@@ -371,15 +346,12 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
-            
             <div class="space-y-4">
                 <div>
                     <div class="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Цвет баннера (10 вариантов)</div>
                     <div id="colors-grid" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1"></div>
                 </div>
-
                 <hr class="border-white/5">
-
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm font-semibold text-white">Жидкое стекло (Glassmorphism)</div>
@@ -391,7 +363,6 @@
                     </label>
                 </div>
             </div>
-
             <button type="button" onclick="App.Settings.closePreferencesModal()" class="w-full mt-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold transition-all text-sm">Готово</button>
         </div>
     </div>
@@ -411,7 +382,7 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭМОДЗИ ДЛЯ БИО (О СЕБЕ) -->
+    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭМОДЗИ ДЛЯ БИО -->
     <div id="profile-emoji-modal" class="modal-overlay">
         <div class="modal-content p-6" style="max-width: 420px; max-height: 70vh;">
             <div class="flex items-center justify-between mb-5">
@@ -439,8 +410,56 @@
         </div>
     </div>
 
-    <!-- ГЛАВНЫЙ ИНТЕРФЕЙС ЧАТА -->
-    <div id="chatgpt-app" class="flex w-full h-full opacity-0 transition-opacity duration-700 hidden relative z-10">
+    <!-- МОДАЛЬНОЕ ОКНО МЕССЕНДЖЕРА ДЛЯ ОТПРАВКИ КОДА -->
+    <div id="share-messenger-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 650px; height: 550px; border-radius: 24px;">
+            <!-- Верхняя панель мессенджера -->
+            <div class="flex items-center justify-between p-4 bg-surface-200 border-b border-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center font-bold text-white">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-white">Поделиться кодом</div>
+                        <div class="text-[11px] text-text-muted">Выберите пользователя по `@username`</div>
+                    </div>
+                </div>
+                <button type="button" onclick="App.Messenger.closeModal()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <div class="flex flex-1 overflow-hidden">
+                <!-- Сайдбар контактов / поиска по юзернейму -->
+                <div class="w-1/2 border-r border-border flex flex-col bg-surface-100 p-3">
+                    <div class="mb-3">
+                        <input type="text" id="messenger-search-input" placeholder="Поиск по @username..." class="w-full bg-surface-300 border border-border rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-brand-500" oninput="App.Messenger.handleSearch(this.value)">
+                    </div>
+                    <div id="messenger-users-list" class="flex-1 overflow-y-auto space-y-1 pr-1">
+                        <div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>
+                    </div>
+                </div>
+
+                <!-- Зона отправки кода выбранному пользователю -->
+                <div class="w-1/2 flex flex-col bg-surface-200 p-4 justify-between">
+                    <div id="messenger-target-info" class="flex items-center gap-2 pb-3 border-b border-border">
+                        <div class="text-xs text-text-muted italic">Пользователь не выбран</div>
+                    </div>
+                    <div class="flex-1 py-3 flex flex-col min-h-0">
+                        <label class="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1">Код для отправки:</label>
+                        <div id="messenger-code-preview" class="flex-1 bg-black/40 border border-border rounded-xl p-3 font-mono text-xs overflow-y-auto text-gray-300"></div>
+                    </div>
+                    <div class="pt-3 border-t border-border">
+                        <button type="button" id="btn-send-code-msg" onclick="App.Messenger.sendCodeToUser()" disabled class="w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all text-sm shadow-lg shadow-brand-500/20">Отправить код</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ГЛАВНЫЙ ИНТЕРФЕЙС ЧАТА + КАНВАС -->
+    <div id="chatgpt-app" class="flex w-full h-full opacity-0 transition-opacity duration-700 hidden relative z-10 overflow-hidden">
+        <!-- СТАНДАРТНЫЙ САЙДБАР ЧАТОВ -->
         <aside id="sidebar" class="glass-sidebar w-[280px] h-full flex flex-col flex-shrink-0 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative z-40 shadow-2xl md:shadow-none">
             <div class="p-4 flex items-center justify-between border-b border-border">
                 <div class="font-bold text-[16px] px-2 flex items-center gap-2.5 cursor-pointer hover:text-white transition-colors text-text-main" onclick="App.Chat.createNewSession()">
@@ -474,6 +493,8 @@
             </div>
         </aside>
         <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden backdrop-blur-sm" onclick="App.UI.toggleMobileSidebar()"></div>
+
+        <!-- ОСНОВНАЯ ОБЛАСТЬ ЧАТА -->
         <main class="flex-1 flex flex-col h-full relative min-w-0">
             <header class="h-14 flex items-center justify-between px-4 md:hidden border-b border-border glass-panel z-20 shadow-sm">
                 <div class="flex items-center">
@@ -495,10 +516,11 @@
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                     </div>
                     <h2 class="text-2xl md:text-3xl font-bold mb-3 text-white tracking-tight text-center">ALTRON 1.5 SUPER</h2>
-                    <p class="text-text-muted text-center max-w-md">Задайте вопрос, отправьте код или файл для анализа.</p>
+                    <p class="text-text-muted text-center max-w-md">Задайте вопрос, отправьте код или используйте режим Канвас.</p>
                 </div>
                 <div id="messages-list" class="w-full pb-36 pt-6 flex flex-col"></div>
             </div>
+            
             <!-- ПОЛЕ ВВОДА -->
             <div class="absolute bottom-0 left-0 w-full pt-10 pb-4 md:pb-6 px-4 md:px-8 z-10" style="background: linear-gradient(to top, var(--bg-body) 60%, transparent);">
                 <div class="max-w-3xl mx-auto w-full relative">
@@ -519,12 +541,46 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center mt-3 text-[11px] font-medium text-text-muted px-4 tracking-wide">
-                        Проверяйте ответы нейросети часто ошибаются!
-                    </div>
                 </div>
             </div>
         </main>
+
+        <!-- КАНВАС ПАНЕЛЬ (GEMINI STYLE WORKSPACE) -->
+        <div id="canvas-pane" class="w-0 flex flex-col bg-surface-100 border-l border-border transition-all duration-300 overflow-hidden shrink-0 relative z-30">
+            <div class="h-14 border-b border-border flex items-center justify-between px-4 bg-surface-200 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-brand-500/20 text-brand-500 flex items-center justify-center border border-brand-500/30">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <div class="text-sm font-bold text-white truncate" id="canvas-title">Канвас Код</div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="App.Canvas.openShareModal()" class="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md cursor-pointer">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        <span>Поделиться</span>
+                    </button>
+                    <button type="button" onclick="App.Canvas.close()" class="p-2 hover:bg-surface-300 rounded-xl text-text-muted hover:text-white transition-colors cursor-pointer">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Переключатель Редактор / Превью -->
+            <div class="flex items-center gap-2 px-4 py-2 border-b border-border bg-surface-200 shrink-0 text-xs font-semibold">
+                <button type="button" id="canvas-tab-editor" onclick="App.Canvas.switchTab('editor')" class="px-3 py-1.5 rounded-lg bg-surface-300 text-white transition-colors">Редактор</button>
+                <button type="button" id="canvas-tab-preview" onclick="App.Canvas.switchTab('preview')" class="px-3 py-1.5 rounded-lg text-text-muted hover:text-white transition-colors">Превью</button>
+            </div>
+
+            <!-- Контент Канваса -->
+            <div class="flex-1 overflow-hidden relative flex flex-col">
+                <!-- Текстовый редактор -->
+                <textarea id="canvas-textarea" class="w-full h-full bg-[#000000] text-gray-200 p-4 font-mono text-xs outline-none resize-none overflow-y-auto leading-relaxed" oninput="App.Canvas.updateCurrentContent(this.value)"></textarea>
+                <!-- Превью фрейм (для HTML/JS/CSS) -->
+                <div id="canvas-preview-container" class="hidden w-full h-full bg-white relative">
+                    <iframe id="canvas-iframe" class="w-full h-full border-0"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- КОД ПРИЛОЖЕНИЯ -->
@@ -572,6 +628,152 @@
             }
         };
 
+        // КАНВАС (WORKSPACE) УПРАВЛЕНИЕ
+        App.Canvas = {
+            currentCode: '',
+            currentLang: '',
+            open: function(code, lang, title = 'Канвас Код') {
+                this.currentCode = code;
+                this.currentLang = lang;
+                document.getElementById('canvas-title').textContent = title;
+                document.getElementById('canvas-textarea').value = code;
+                const pane = document.getElementById('canvas-pane');
+                pane.classList.remove('w-0');
+                pane.classList.add('w-full', 'md:w-[480px]', 'lg:w-[560px]');
+                this.switchTab('editor');
+            },
+            close: function() {
+                const pane = document.getElementById('canvas-pane');
+                pane.classList.remove('w-full', 'md:w-[480px]', 'lg:w-[560px]');
+                pane.classList.add('w-0');
+            },
+            switchTab: function(tab) {
+                const edTab = document.getElementById('canvas-tab-editor');
+                const prevTab = document.getElementById('canvas-tab-preview');
+                const ta = document.getElementById('canvas-textarea');
+                const prevCont = document.getElementById('canvas-preview-container');
+
+                if (tab === 'editor') {
+                    edTab.className = 'px-3 py-1.5 rounded-lg bg-surface-300 text-white transition-colors';
+                    prevTab.className = 'px-3 py-1.5 rounded-lg text-text-muted hover:text-white transition-colors';
+                    ta.classList.remove('hidden');
+                    prevCont.classList.add('hidden');
+                } else {
+                    prevTab.className = 'px-3 py-1.5 rounded-lg bg-surface-300 text-white transition-colors';
+                    edTab.className = 'px-3 py-1.5 rounded-lg text-text-muted hover:text-white transition-colors';
+                    ta.classList.add('hidden');
+                    prevCont.classList.remove('hidden');
+                    const iframe = document.getElementById('canvas-iframe');
+                    iframe.srcdoc = this.currentCode;
+                }
+            },
+            updateCurrentContent: function(val) {
+                this.currentCode = val;
+            },
+            openShareModal: function() {
+                App.Messenger.open(this.currentCode);
+            }
+        };
+
+        // МЕССЕНДЖЕР ОБМЕНА КОДОМ (ПОИСК ПО @USERNAME НА БЭКЕНДЕ)
+        App.Messenger = {
+            selectedUser: null,
+            codeToSend: '',
+            open: function(code) {
+                this.codeToSend = code;
+                this.selectedUser = null;
+                document.getElementById('messenger-code-preview').textContent = code;
+                document.getElementById('messenger-search-input').value = '';
+                document.getElementById('messenger-users-list').innerHTML = '<div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>';
+                document.getElementById('messenger-target-info').innerHTML = '<div class="text-xs text-text-muted italic">Пользователь не выбран</div>';
+                document.getElementById('btn-send-code-msg').disabled = true;
+                document.getElementById('share-messenger-modal').classList.add('active');
+            },
+            closeModal: function() {
+                document.getElementById('share-messenger-modal').classList.remove('active');
+            },
+            handleSearch: async function(query) {
+                const q = query.trim().replace(/^@/, '');
+                const listContainer = document.getElementById('messenger-users-list');
+                if (!q) {
+                    listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>';
+                    return;
+                }
+                listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Поиск...</div>';
+                try {
+                    const currentUser = App.Storage.getUser();
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/search-users`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: q, currentEmail: currentUser.email })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.users && data.users.length > 0) {
+                        listContainer.innerHTML = '';
+                        data.users.forEach(u => {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-300 border border-transparent hover:border-border transition-all text-left';
+                            btn.innerHTML = `
+                                <img src="${u.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=User'}" class="w-9 h-9 rounded-full object-cover bg-black shrink-0 border border-border">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-xs font-bold text-white truncate">${u.nickname}</div>
+                                    <div class="text-[11px] text-brand-500 font-mono truncate">@${u.username || 'user'}</div>
+                                </div>
+                            `;
+                            btn.onclick = () => App.Messenger.selectUser(u);
+                            listContainer.appendChild(btn);
+                        });
+                    } else {
+                        listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Пользователи не найдены</div>';
+                    }
+                } catch(e) {
+                    listContainer.innerHTML = '<div class="text-xs text-red-400 text-center py-6">Ошибка поиска</div>';
+                }
+            },
+            selectUser: function(u) {
+                this.selectedUser = u;
+                document.getElementById('messenger-target-info').innerHTML = `
+                    <img src="${u.avatar}" class="w-8 h-8 rounded-full object-cover bg-black shrink-0">
+                    <div class="truncate">
+                        <div class="text-xs font-bold text-white truncate">${u.nickname}</div>
+                        <div class="text-[10px] text-brand-500 font-mono">@${u.username}</div>
+                    </div>
+                `;
+                document.getElementById('btn-send-code-msg').disabled = false;
+            },
+            sendCodeToUser: async function() {
+                if (!this.selectedUser) return;
+                const currentUser = App.Storage.getUser();
+                const btn = document.getElementById('btn-send-code-msg');
+                btn.disabled = true;
+                btn.innerText = 'Отправка...';
+                try {
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/send-code-message`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            senderEmail: currentUser.email,
+                            recipientEmail: this.selectedUser.email,
+                            codeContent: this.codeToSend
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        alert('Код успешно отправлен пользователю @' + this.selectedUser.username);
+                        this.closeModal();
+                    } else {
+                        alert('Ошибка отправки: ' + (data.error || 'неизвестно'));
+                    }
+                } catch(e) {
+                    alert('Ошибка сети при отправке');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = 'Отправить код';
+                }
+            }
+        };
+
         App.Settings = {
             pendingAvatarBase64: null,
             pendingBackgroundBg: null,
@@ -588,7 +790,6 @@
                 document.getElementById('profile-display-name-title').textContent = user.nickname || 'Шелби Кфг';
                 document.getElementById('settings-username-error').classList.add('hidden');
                 
-                // Исправление аватара: установка дефолтного значения если отсутствует
                 const avatarImg = document.getElementById('settings-avatar-preview');
                 avatarImg.src = user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.nickname || 'User'}&backgroundColor=121212`;
                 
@@ -1468,7 +1669,6 @@
                 if (!text) return '';
                 let html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 
-                // Рендеринг Lottie-эмодзи внутри текста
                 html = html.replace(/\[LOTTIE:(.*?)\]/g, (match, jsonStr) => {
                     let dataUrl = '';
                     try {
@@ -1483,10 +1683,12 @@
                 html = html.replace(/```(.*?)?\n([\s\S]*?)```/g, (match, lang, code) => {
                     const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
                     const safeLang = lang || 'txt';
+                    const escapedCodeForCanvas = code.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     return `<div class="code-block-wrapper my-4 rounded-xl border border-border shadow-lg overflow-hidden relative text-left">
                         <div class="flex items-center justify-between px-4 py-2 bg-surface-300 border-b border-border text-xs font-bold text-gray-400">
                             <span class="uppercase tracking-wider">${lang || 'TEXT'}</span>
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="App.Canvas.open(document.getElementById('${blockId}').textContent, '${safeLang}', '${lang ? lang.toUpperCase() + ' Скрипт' : 'Канвас Код'}')" class="flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>Канвас</span></button>
                                 <button type="button" onclick="App.UI.copyCode(this, '${blockId}')" class="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Копировать</span></button>
                                 <button type="button" onclick="App.UI.downloadCode('${blockId}', '${safeLang}')" class="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer text-brand-500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>Скачать</span></button>
                             </div>
@@ -1577,3 +1779,4 @@
     </script>
 </body>
 </html>
+
