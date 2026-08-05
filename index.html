@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALTRON AI - Канвас и Обмен Кодом</title>
+    <title>ALTRON AI - Чат, Канвас и Мессенджер</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Плеер для Анимированных Эмодзи (Lottie) -->
@@ -75,21 +75,13 @@
         .markdown-body pre { background: var(--code-bg); border-radius: 12px; padding: 0; margin: 16px 0; border: 1px solid var(--border-color); font-size: 14px; overflow: hidden; backdrop-filter: var(--glass-blur); }
         .markdown-body code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
         .markdown-body .inline-code { background: var(--surface-300); padding: 2px 6px; border-radius: 6px; font-size: 13px; color: #e2e8f0; border: 1px solid var(--border-color); }
-        .markdown-body ul { list-style-type: disc; margin-left: 20px; margin-bottom: 12px; }
-        .markdown-body ol { list-style-type: decimal; margin-left: 20px; margin-bottom: 12px; }
-        .markdown-body li { margin-bottom: 6px; padding-left: 4px; }
-        .markdown-body a { color: #818cf8; text-decoration: none; border-bottom: 1px solid transparent; transition: border 0.2s; }
-        .markdown-body a:hover { border-bottom-color: #818cf8; }
-        .markdown-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 14px; }
-        .markdown-body th, .markdown-body td { border: 1px solid var(--border-color); padding: 10px 14px; }
-        .markdown-body th { background: var(--surface-300); font-weight: 600; text-align: left; }
         .chat-input-wrapper { background: var(--input-bg); border-radius: 24px; border: 1px solid var(--border-color); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
         .chat-input-wrapper:focus-within { border-color: rgba(99, 102, 241, 0.5); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.1); background: var(--surface-200); }
         .chat-input-textarea { background: transparent; border: none; outline: none; color: var(--text-main); resize: none; max-height: 200px; padding: 16px 0; line-height: 1.5; font-size: 15px; font-weight: 400; width: 100%; }
         .chat-input-textarea::placeholder { color: var(--text-muted); }
         .nav-item, .history-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .nav-item:hover, .history-item:hover { background: var(--surface-200); color: var(--text-main); }
-        .history-item.active { background: var(--surface-200); color: var(--text-main); font-weight: 600; }
+        .nav-item.active, .history-item.active { background: var(--surface-200); color: var(--text-main); font-weight: 600; }
         .action-btn { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; cursor: pointer; border: none; background: transparent; color: var(--text-muted); }
         .action-btn:hover { background: var(--surface-300); color: var(--text-main); }
         .send-btn-active { background: #fff !important; color: #000 !important; }
@@ -142,8 +134,6 @@
         .tg-card { background: #212228; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 14px 16px; }
         .tg-action-btn { background: #2b2d36; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 6px; color: #ffffff; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; width: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: center; }
         .tg-action-btn:hover { background: #353844; border-color: rgba(255,255,255,0.12); }
-        
-        /* Canvas Workspace Styles */
         #canvas-pane { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     </style>
 </head>
@@ -215,7 +205,7 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ В СТИЛЕ TELEGRAM -->
+    <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <div id="settings-background-wrapper" class="relative w-full h-[320px] overflow-hidden shrink-0" style="background: radial-gradient(circle at center, #2d2645 0%, #151419 100%);">
@@ -249,7 +239,6 @@
                             <div class="text-[11px] text-green-300 font-bold mb-0.5 flex items-center gap-1 drop-shadow">
                                 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> в сети
                             </div>
-                            <div id="profile-id-display" class="text-[11px] text-white font-bold font-mono drop-shadow">ID: 7697867470, DC: 5</div>
                         </div>
                         <div class="flex items-center gap-2 w-full max-w-[360px]">
                             <label class="tg-action-btn">
@@ -262,7 +251,7 @@
                                 <span>Изменить</span>
                             </button>
                             <button type="button" onclick="App.Settings.openPreferencesModal()" class="tg-action-btn">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                 <span>Настройки</span>
                             </button>
                         </div>
@@ -319,14 +308,6 @@
                     </div>
                     <p class="text-[11px] text-text-muted">Управление безлимитным ИИ и цензурой:</p>
                     <div id="admin-users-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
-                    <div class="pt-3 border-t border-border">
-                        <div class="text-xs font-bold text-white uppercase tracking-wider mb-1">Загрузка JSON Lottie эмодзи</div>
-                        <p class="text-[11px] text-text-muted mb-2">Загрузите `.json` файлы анимации.</p>
-                        <label class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 rounded-xl text-xs font-bold text-white cursor-pointer transition-colors text-center block shadow-lg shadow-brand-500/20">
-                            Выбрать JSON файлы эмодзи
-                            <input type="file" id="admin-json-lottie-input" accept=".json,application/json" multiple class="hidden" onchange="App.Settings.handleAdminJsonUpload(event)">
-                        </label>
-                    </div>
                 </div>
 
                 <div class="mt-2 flex items-center gap-3 w-full pb-2">
@@ -410,71 +391,47 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО МЕССЕНДЖЕРА ДЛЯ ОТПРАВКИ КОДА -->
-    <div id="share-messenger-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 650px; height: 550px; border-radius: 24px;">
-            <!-- Верхняя панель мессенджера -->
-            <div class="flex items-center justify-between p-4 bg-surface-200 border-b border-border">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center font-bold text-white">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    </div>
-                    <div>
-                        <div class="text-sm font-bold text-white">Поделиться кодом</div>
-                        <div class="text-[11px] text-text-muted">Выберите пользователя по `@username`</div>
-                    </div>
-                </div>
-                <button type="button" onclick="App.Messenger.closeModal()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-            </div>
-
-            <div class="flex flex-1 overflow-hidden">
-                <!-- Сайдбар контактов / поиска по юзернейму -->
-                <div class="w-1/2 border-r border-border flex flex-col bg-surface-100 p-3">
-                    <div class="mb-3">
-                        <input type="text" id="messenger-search-input" placeholder="Поиск по @username..." class="w-full bg-surface-300 border border-border rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-brand-500" oninput="App.Messenger.handleSearch(this.value)">
-                    </div>
-                    <div id="messenger-users-list" class="flex-1 overflow-y-auto space-y-1 pr-1">
-                        <div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>
-                    </div>
-                </div>
-
-                <!-- Зона отправки кода выбранному пользователю -->
-                <div class="w-1/2 flex flex-col bg-surface-200 p-4 justify-between">
-                    <div id="messenger-target-info" class="flex items-center gap-2 pb-3 border-b border-border">
-                        <div class="text-xs text-text-muted italic">Пользователь не выбран</div>
-                    </div>
-                    <div class="flex-1 py-3 flex flex-col min-h-0">
-                        <label class="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1">Код для отправки:</label>
-                        <div id="messenger-code-preview" class="flex-1 bg-black/40 border border-border rounded-xl p-3 font-mono text-xs overflow-y-auto text-gray-300"></div>
-                    </div>
-                    <div class="pt-3 border-t border-border">
-                        <button type="button" id="btn-send-code-msg" onclick="App.Messenger.sendCodeToUser()" disabled class="w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all text-sm shadow-lg shadow-brand-500/20">Отправить код</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ГЛАВНЫЙ ИНТЕРФЕЙС ЧАТА + КАНВАС -->
+    <!-- ГЛАВНЫЙ ИНТЕРФЕЙС ПЛАТФОРМЫ -->
     <div id="chatgpt-app" class="flex w-full h-full opacity-0 transition-opacity duration-700 hidden relative z-10 overflow-hidden">
-        <!-- СТАНДАРТНЫЙ САЙДБАР ЧАТОВ -->
+        
+        <!-- САЙДБАР (ПЕРЕКЛЮЧЕНИЕ ЧАТ / МЕССЕНДЖЕР / ИСТОРИЯ) -->
         <aside id="sidebar" class="glass-sidebar w-[280px] h-full flex flex-col flex-shrink-0 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative z-40 shadow-2xl md:shadow-none">
-            <div class="p-4 flex items-center justify-between border-b border-border">
-                <div class="font-bold text-[16px] px-2 flex items-center gap-2.5 cursor-pointer hover:text-white transition-colors text-text-main" onclick="App.Chat.createNewSession()">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4V20M4 12H20"/></svg>
-                    <span>Новый чат</span>
-                </div>
-                <button type="button" class="p-2 bg-surface-200 hover:bg-surface-300 rounded-lg cursor-pointer transition-colors text-text-muted hover:text-white border border-border" onclick="App.UI.toggleMobileSidebar()">
-                    <svg class="md:hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    <svg class="hidden md:block" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            <!-- Навигация по разделам -->
+            <div class="p-3 border-b border-border flex flex-col gap-1.5">
+                <button type="button" id="nav-btn-chat" onclick="App.Navigation.switchSection('ai-chat')" class="nav-item active">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    <span>ALTRON AI Чат</span>
+                </button>
+                <button type="button" id="nav-btn-messenger" onclick="App.Navigation.switchSection('messenger')" class="nav-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    <span>Мессенджер</span>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto px-3 py-4">
-                <div class="text-[11px] font-bold text-text-muted px-3 mb-3 uppercase tracking-widest">История диалогов</div>
-                <div id="history-container" class="flex flex-col gap-1"></div>
+
+            <!-- Динамический контент сайдбара в зависимости от раздела -->
+            <div id="sidebar-content-chat" class="flex-1 flex flex-col min-h-0">
+                <div class="p-4 flex items-center justify-between border-b border-border">
+                    <div class="font-bold text-[15px] px-2 flex items-center gap-2.5 cursor-pointer hover:text-white transition-colors text-text-main" onclick="App.Chat.createNewSession()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4V20M4 12H20"/></svg>
+                        <span>Новый чат</span>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto px-3 py-4">
+                    <div class="text-[11px] font-bold text-text-muted px-3 mb-3 uppercase tracking-widest">История диалогов</div>
+                    <div id="history-container" class="flex flex-col gap-1"></div>
+                </div>
             </div>
+
+            <div id="sidebar-content-messenger" class="flex-1 flex flex-col min-h-0 hidden">
+                <div class="p-3 border-b border-border">
+                    <input type="text" id="messenger-sidebar-search" placeholder="Поиск по @username..." class="w-full bg-surface-200 border border-border rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-brand-500" oninput="App.Messenger.handleSearch(this.value)">
+                </div>
+                <div class="flex-1 overflow-y-auto px-2 py-3 space-y-1" id="messenger-contacts-list">
+                    <div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>
+                </div>
+            </div>
+
+            <!-- Профиль внизу сайдбара -->
             <div class="p-4 border-t border-border mt-auto bg-surface-100">
                 <div class="flex items-center gap-3 cursor-pointer hover:bg-surface-200 p-2 -mx-2 rounded-xl transition-colors" onclick="App.Settings.open()">
                     <img id="ui-avatar" src="" class="w-10 h-10 rounded-full border border-border object-cover shadow-sm bg-black shrink-0">
@@ -494,58 +451,91 @@
         </aside>
         <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden backdrop-blur-sm" onclick="App.UI.toggleMobileSidebar()"></div>
 
-        <!-- ОСНОВНАЯ ОБЛАСТЬ ЧАТА -->
+        <!-- ОСНОВНАЯ ОБЛАСТЬ (ЧАТ ИЛИ МЕССЕНДЖЕР) -->
         <main class="flex-1 flex flex-col h-full relative min-w-0">
             <header class="h-14 flex items-center justify-between px-4 md:hidden border-b border-border glass-panel z-20 shadow-sm">
                 <div class="flex items-center">
                     <button type="button" onclick="App.UI.toggleMobileSidebar()" class="text-text-muted hover:text-white mr-3 p-1">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                     </button>
-                    <div class="font-bold text-[15px] tracking-wide flex items-center gap-2">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg> ALTRON AI 
-                    </div>
+                    <div class="font-bold text-[15px] tracking-wide flex items-center gap-2" id="mobile-header-title">ALTRON AI</div>
                 </div>
                 <div class="flex items-center gap-2" onclick="App.Settings.open()">
                     <div id="mobile-ui-status-container" class="shrink-0 flex items-center justify-center w-5 h-5"></div>
                     <img id="mobile-ui-avatar" src="" class="w-8 h-8 rounded-full border border-border object-cover cursor-pointer">
                 </div>
             </header>
-            <div id="chat-feed" class="flex-1 overflow-y-auto w-full scroll-smooth flex flex-col relative z-0">
-                <div id="welcome-screen" class="absolute inset-0 flex flex-col items-center justify-center p-6 animate-fade-in">
-                    <div class="w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(255,255,255,0.15)] border-4 border-surface-300">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+
+            <!-- ВКЛАДКА 1: ИИ ЧАТ -->
+            <div id="section-ai-chat" class="flex-1 flex flex-col h-full relative overflow-hidden">
+                <div id="chat-feed" class="flex-1 overflow-y-auto w-full scroll-smooth flex flex-col relative z-0">
+                    <div id="welcome-screen" class="absolute inset-0 flex flex-col items-center justify-center p-6 animate-fade-in">
+                        <div class="w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(255,255,255,0.15)] border-4 border-surface-300">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-3 text-white tracking-tight text-center">ALTRON 1.5 SUPER</h2>
+                        <p class="text-text-muted text-center max-w-md">Задайте вопрос, отправьте код или используйте режим Канвас.</p>
                     </div>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-3 text-white tracking-tight text-center">ALTRON 1.5 SUPER</h2>
-                    <p class="text-text-muted text-center max-w-md">Задайте вопрос, отправьте код или используйте режим Канвас.</p>
+                    <div id="messages-list" class="w-full pb-36 pt-6 flex flex-col"></div>
                 </div>
-                <div id="messages-list" class="w-full pb-36 pt-6 flex flex-col"></div>
-            </div>
-            
-            <!-- ПОЛЕ ВВОДА -->
-            <div class="absolute bottom-0 left-0 w-full pt-10 pb-4 md:pb-6 px-4 md:px-8 z-10" style="background: linear-gradient(to top, var(--bg-body) 60%, transparent);">
-                <div class="max-w-3xl mx-auto w-full relative">
-                    <div class="chat-input-wrapper">
-                        <div id="file-preview-container" class="hidden flex gap-2 p-3 pb-0 overflow-x-auto"></div>
-                        <div class="flex items-end p-2 px-3 relative">
-                            <input type="file" id="hidden-file-input" multiple accept="image/*,.txt,.js,.py,.html,.css,.json,.lua,.cpp,.c,.h,.java,.md,.ts,.jsx,.tsx" onchange="App.FileHandler.handleFileSelect(event)" class="hidden">
-                            <button type="button" class="action-btn mb-1.5" title="Прикрепить файл" onclick="document.getElementById('hidden-file-input').click()">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                            </button>
-                            <button type="button" class="action-btn mb-1.5 ml-1" title="Вставить анимированный эмодзи" onclick="App.Chat.openEmojiModal()">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-                            </button>
-                            <textarea id="message-input" placeholder="Сообщение ALTRON AI..." class="chat-input-textarea ml-3" rows="1" oninput="App.UI.autoResizeTextarea()" onkeydown="App.Chat.handleKeydown(event)"></textarea>
-                            <div class="flex items-center gap-1 mb-1.5 ml-2 flex-shrink-0">
-                                <button type="button" id="btn-voice-mode" class="action-btn" title="Голосовой ввод"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
-                                <button type="button" id="btn-send" class="action-btn hidden" onclick="App.Chat.sendMessage()" title="Отправить"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
+                
+                <div class="absolute bottom-0 left-0 w-full pt-10 pb-4 md:pb-6 px-4 md:px-8 z-10" style="background: linear-gradient(to top, var(--bg-body) 60%, transparent);">
+                    <div class="max-w-3xl mx-auto w-full relative">
+                        <div class="chat-input-wrapper">
+                            <div id="file-preview-container" class="hidden flex gap-2 p-3 pb-0 overflow-x-auto"></div>
+                            <div class="flex items-end p-2 px-3 relative">
+                                <input type="file" id="hidden-file-input" multiple accept="image/*,.txt,.js,.py,.html,.css,.json,.lua,.cpp,.c,.h,.java,.md,.ts,.jsx,.tsx" onchange="App.FileHandler.handleFileSelect(event)" class="hidden">
+                                <button type="button" class="action-btn mb-1.5" title="Прикрепить файл" onclick="document.getElementById('hidden-file-input').click()">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                                </button>
+                                <button type="button" class="action-btn mb-1.5 ml-1" title="Вставить анимированный эмодзи" onclick="App.Chat.openEmojiModal()">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                                </button>
+                                <textarea id="message-input" placeholder="Сообщение ALTRON AI..." class="chat-input-textarea ml-3" rows="1" oninput="App.UI.autoResizeTextarea()" onkeydown="App.Chat.handleKeydown(event)"></textarea>
+                                <div class="flex items-center gap-1 mb-1.5 ml-2 flex-shrink-0">
+                                    <button type="button" id="btn-voice-mode" class="action-btn" title="Голосовой ввод"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
+                                    <button type="button" id="btn-send" class="action-btn hidden" onclick="App.Chat.sendMessage()" title="Отправить"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА 2: МЕССЕНДЖЕР (БЕЗ ИИ) -->
+            <div id="section-messenger" class="flex-1 flex flex-col h-full relative overflow-hidden hidden bg-surface-100">
+                <div id="messenger-welcome" class="flex-1 flex flex-col items-center justify-center p-6 text-center text-text-muted">
+                    <div class="w-16 h-16 bg-surface-200 border border-border rounded-full flex items-center justify-center mb-4 text-brand-500">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Ваши личные сообщения</h3>
+                    <p class="text-xs max-w-xs">Выберите пользователя слева по `@username`, чтобы начать переписку и обмен кодом.</p>
+                </div>
+                <div id="messenger-chat-box" class="flex-1 flex flex-col h-full hidden">
+                    <!-- Шапка активного диалога -->
+                    <div class="h-16 px-6 bg-surface-200 border-b border-border flex items-center gap-3 shrink-0">
+                        <img id="messenger-active-avatar" src="" class="w-10 h-10 rounded-full object-cover bg-black border border-border">
+                        <div>
+                            <div id="messenger-active-name" class="text-sm font-bold text-white">Имя</div>
+                            <div id="messenger-active-username" class="text-[11px] text-brand-500 font-mono">@username</div>
+                        </div>
+                    </div>
+                    <!-- Список сообщений -->
+                    <div id="messenger-messages-feed" class="flex-1 overflow-y-auto p-6 space-y-4 flex flex-col"></div>
+                    <!-- Поле ввода для мессенджера -->
+                    <div class="p-4 bg-surface-200 border-t border-border">
+                        <div class="flex items-center gap-3 bg-surface-300 border border-border rounded-2xl px-4 py-2">
+                            <input type="text" id="messenger-msg-input" placeholder="Введите сообщение..." class="flex-1 bg-transparent border-0 text-white text-sm outline-none" onkeydown="App.Messenger.handleKeydown(event)">
+                            <button type="button" onclick="App.Messenger.sendDirectMessage()" class="p-2 bg-brand-500 hover:bg-brand-600 rounded-xl text-white transition-all shadow-md">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- КАНВАС ПАНЕЛЬ (GEMINI STYLE WORKSPACE) -->
+        <!-- КАНВАС ПАНЕЛЬ -->
         <div id="canvas-pane" class="w-0 flex flex-col bg-surface-100 border-l border-border transition-all duration-300 overflow-hidden shrink-0 relative z-30">
             <div class="h-14 border-b border-border flex items-center justify-between px-4 bg-surface-200 shrink-0">
                 <div class="flex items-center gap-2.5">
@@ -554,31 +544,17 @@
                     </div>
                     <div class="text-sm font-bold text-white truncate" id="canvas-title">Канвас Код</div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="App.Canvas.openShareModal()" class="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md cursor-pointer">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                        <span>Поделиться</span>
-                    </button>
-                    <button type="button" onclick="App.Canvas.close()" class="p-2 hover:bg-surface-300 rounded-xl text-text-muted hover:text-white transition-colors cursor-pointer">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                </div>
+                <button type="button" onclick="App.Canvas.close()" class="p-2 hover:bg-surface-300 rounded-xl text-text-muted hover:text-white transition-colors cursor-pointer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
             </div>
-            
-            <!-- Переключатель Редактор / Превью -->
             <div class="flex items-center gap-2 px-4 py-2 border-b border-border bg-surface-200 shrink-0 text-xs font-semibold">
                 <button type="button" id="canvas-tab-editor" onclick="App.Canvas.switchTab('editor')" class="px-3 py-1.5 rounded-lg bg-surface-300 text-white transition-colors">Редактор</button>
                 <button type="button" id="canvas-tab-preview" onclick="App.Canvas.switchTab('preview')" class="px-3 py-1.5 rounded-lg text-text-muted hover:text-white transition-colors">Превью</button>
             </div>
-
-            <!-- Контент Канваса -->
             <div class="flex-1 overflow-hidden relative flex flex-col">
-                <!-- Текстовый редактор -->
                 <textarea id="canvas-textarea" class="w-full h-full bg-[#000000] text-gray-200 p-4 font-mono text-xs outline-none resize-none overflow-y-auto leading-relaxed" oninput="App.Canvas.updateCurrentContent(this.value)"></textarea>
-                <!-- Превью фрейм (для HTML/JS/CSS) -->
-                <div id="canvas-preview-container" class="hidden w-full h-full bg-white relative">
-                    <iframe id="canvas-iframe" class="w-full h-full border-0"></iframe>
-                </div>
+                <div id="canvas-preview-container" class="hidden w-full h-full bg-[#111116] relative overflow-hidden flex flex-col"></div>
             </div>
         </div>
     </div>
@@ -601,12 +577,7 @@
             { name: 'Midnight Indigo', bg: 'linear-gradient(135deg, #311052 0%, #0d0f1a 100%)' },
             { name: 'Emerald Night', bg: 'linear-gradient(135deg, #063f28 0%, #0a0e0c 100%)' },
             { name: 'Crimson Abyss', bg: 'linear-gradient(135deg, #570e17 0%, #14090a 100%)' },
-            { name: 'Cyberpunk Neon', bg: 'linear-gradient(135deg, #700b52 0%, #10162b 100%)' },
-            { name: 'Sunset Bronze', bg: 'linear-gradient(135deg, #663300 0%, #14110e 100%)' },
-            { name: 'Deep Sapphire', bg: 'linear-gradient(135deg, #0d386e 0%, #080b12 100%)' },
-            { name: 'Amethyst Glow', bg: 'linear-gradient(135deg, #441054 0%, #120b14 100%)' },
-            { name: 'Slate Steel', bg: 'linear-gradient(135deg, #2b3542 0%, #101214 100%)' },
-            { name: 'Pure Carbon', bg: 'linear-gradient(135deg, #1f1f1f 0%, #0a0a0a 100%)' }
+            { name: 'Cyberpunk Neon', bg: 'linear-gradient(135deg, #700b52 0%, #10162b 100%)' }
         ];
 
         const App = {
@@ -628,7 +599,153 @@
             }
         };
 
-        // КАНВАС (WORKSPACE) УПРАВЛЕНИЕ
+        // НАВИГАЦИЯ МЕЖДУ ИИ ЧАТОМ И МЕССЕНДЖЕРОМ
+        App.Navigation = {
+            switchSection: function(section) {
+                const btnChat = document.getElementById('nav-btn-chat');
+                const btnMessenger = document.getElementById('nav-btn-messenger');
+                const contentChat = document.getElementById('sidebar-content-chat');
+                const contentMessenger = document.getElementById('sidebar-content-messenger');
+                const sectionChat = document.getElementById('section-ai-chat');
+                const sectionMessenger = document.getElementById('section-messenger');
+                const mobileTitle = document.getElementById('mobile-header-title');
+
+                if (section === 'ai-chat') {
+                    btnChat.classList.add('active');
+                    btnMessenger.classList.remove('active');
+                    contentChat.classList.remove('hidden');
+                    contentMessenger.classList.add('hidden');
+                    sectionChat.classList.remove('hidden');
+                    sectionMessenger.classList.add('hidden');
+                    mobileTitle.textContent = 'ALTRON AI';
+                } else {
+                    btnMessenger.classList.add('active');
+                    btnChat.classList.remove('active');
+                    contentMessenger.classList.remove('hidden');
+                    contentChat.classList.add('hidden');
+                    sectionMessenger.classList.remove('hidden');
+                    sectionChat.classList.add('hidden');
+                    mobileTitle.textContent = 'Мессенджер';
+                }
+                if(window.innerWidth < 768) App.UI.toggleMobileSidebar();
+            }
+        };
+
+        // МЕССЕНДЖЕР ЛОГИКА
+        App.Messenger = {
+            activeUser: null,
+            pollInterval: null,
+            handleSearch: async function(query) {
+                const q = query.trim().replace(/^@/, '');
+                const listContainer = document.getElementById('messenger-contacts-list');
+                const currentUser = App.Storage.getUser();
+                if (!q) {
+                    listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>';
+                    return;
+                }
+                try {
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/search-users`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: q, currentEmail: currentUser.email })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.users && data.users.length > 0) {
+                        listContainer.innerHTML = '';
+                        data.users.forEach(u => {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-200 border border-transparent hover:border-border transition-all text-left';
+                            btn.innerHTML = `
+                                <img src="${u.avatar}" class="w-9 h-9 rounded-full object-cover bg-black shrink-0 border border-border">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-xs font-bold text-white truncate">${u.nickname}</div>
+                                    <div class="text-[11px] text-brand-500 font-mono truncate">@${u.username || 'user'}</div>
+                                </div>
+                            `;
+                            btn.onclick = () => App.Messenger.openChatWithUser(u);
+                            listContainer.appendChild(btn);
+                        });
+                    } else {
+                        listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Пользователи не найдены</div>';
+                    }
+                } catch(e) {
+                    listContainer.innerHTML = '<div class="text-xs text-red-400 text-center py-6">Ошибка поиска</div>';
+                }
+            },
+            openChatWithUser: function(u) {
+                this.activeUser = u;
+                document.getElementById('messenger-welcome').classList.add('hidden');
+                document.getElementById('messenger-chat-box').classList.remove('hidden');
+                document.getElementById('messenger-active-avatar').src = u.avatar;
+                document.getElementById('messenger-active-name').textContent = u.nickname;
+                document.getElementById('messenger-active-username').textContent = '@' + (u.username || 'user');
+                this.loadMessages();
+                if (this.pollInterval) clearInterval(this.pollInterval);
+                this.pollInterval = setInterval(() => this.loadMessages(true), 3000);
+            },
+            loadMessages: async function(silent = false) {
+                if (!this.activeUser) return;
+                const currentUser = App.Storage.getUser();
+                try {
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/get-messages`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user1: currentUser.email, user2: this.activeUser.email })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        const feed = document.getElementById('messenger-messages-feed');
+                        feed.innerHTML = '';
+                        if (data.messages && data.messages.length > 0) {
+                            data.messages.forEach(msg => {
+                                const isMe = msg.sender === currentUser.email;
+                                const bubble = document.createElement('div');
+                                bubble.className = `flex flex-col max-w-[75%] ${isMe ? 'ml-auto items-end' : 'mr-auto items-start'}`;
+                                bubble.innerHTML = `
+                                    <div class="p-3 rounded-2xl text-sm ${isMe ? 'bg-brand-500 text-white rounded-br-none' : 'bg-surface-300 text-white border border-border rounded-bl-none'}">
+                                        ${msg.content}
+                                    </div>
+                                    <span class="text-[10px] text-text-muted mt-1 px-1">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                `;
+                                feed.appendChild(bubble);
+                            });
+                            if (!silent) feed.scrollTop = feed.scrollHeight;
+                        } else {
+                            feed.innerHTML = '<div class="text-xs text-text-muted text-center py-8">Нет сообщений. Напишите первое!</div>';
+                        }
+                    }
+                } catch(e) {}
+            },
+            handleKeydown: function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.sendDirectMessage();
+                }
+            },
+            sendDirectMessage: async function() {
+                if (!this.activeUser) return;
+                const input = document.getElementById('messenger-msg-input');
+                const text = input.value.trim();
+                if (!text) return;
+                input.value = '';
+                const currentUser = App.Storage.getUser();
+                try {
+                    await fetch(`${CONFIG.BACKEND_URL}/send-message`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sender: currentUser.email,
+                            recipient: this.activeUser.email,
+                            content: text
+                        })
+                    });
+                    this.loadMessages();
+                } catch(e) {}
+            }
+        };
+
+        // КАНВАС И СИСТЕМА ПРЕВЬЮ
         App.Canvas = {
             currentCode: '',
             currentLang: '',
@@ -663,123 +780,75 @@
                     edTab.className = 'px-3 py-1.5 rounded-lg text-text-muted hover:text-white transition-colors';
                     ta.classList.add('hidden');
                     prevCont.classList.remove('hidden');
-                    const iframe = document.getElementById('canvas-iframe');
-                    iframe.srcdoc = this.currentCode;
-                }
-            },
-            updateCurrentContent: function(val) {
-                this.currentCode = val;
-            },
-            openShareModal: function() {
-                App.Messenger.open(this.currentCode);
-            }
-        };
-
-        // МЕССЕНДЖЕР ОБМЕНА КОДОМ (ПОИСК ПО @USERNAME НА БЭКЕНДЕ)
-        App.Messenger = {
-            selectedUser: null,
-            codeToSend: '',
-            open: function(code) {
-                this.codeToSend = code;
-                this.selectedUser = null;
-                document.getElementById('messenger-code-preview').textContent = code;
-                document.getElementById('messenger-search-input').value = '';
-                document.getElementById('messenger-users-list').innerHTML = '<div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>';
-                document.getElementById('messenger-target-info').innerHTML = '<div class="text-xs text-text-muted italic">Пользователь не выбран</div>';
-                document.getElementById('btn-send-code-msg').disabled = true;
-                document.getElementById('share-messenger-modal').classList.add('active');
-            },
-            closeModal: function() {
-                document.getElementById('share-messenger-modal').classList.remove('active');
-            },
-            handleSearch: async function(query) {
-                const q = query.trim().replace(/^@/, '');
-                const listContainer = document.getElementById('messenger-users-list');
-                if (!q) {
-                    listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Введите юзернейм для поиска</div>';
-                    return;
-                }
-                listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Поиск...</div>';
-                try {
-                    const currentUser = App.Storage.getUser();
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/search-users`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ query: q, currentEmail: currentUser.email })
-                    });
-                    const data = await res.json();
-                    if (data.success && data.users && data.users.length > 0) {
-                        listContainer.innerHTML = '';
-                        data.users.forEach(u => {
-                            const btn = document.createElement('button');
-                            btn.type = 'button';
-                            btn.className = 'w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-300 border border-transparent hover:border-border transition-all text-left';
-                            btn.innerHTML = `
-                                <img src="${u.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=User'}" class="w-9 h-9 rounded-full object-cover bg-black shrink-0 border border-border">
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-xs font-bold text-white truncate">${u.nickname}</div>
-                                    <div class="text-[11px] text-brand-500 font-mono truncate">@${u.username || 'user'}</div>
-                                </div>
-                            `;
-                            btn.onclick = () => App.Messenger.selectUser(u);
-                            listContainer.appendChild(btn);
-                        });
+                    
+                    if (this.currentLang.toLowerCase() === 'lua' || this.currentLang.toLowerCase() === 'roblox' || this.currentCode.includes('Instance.new')) {
+                        this.renderRobloxLuaPreview(prevCont, this.currentCode);
                     } else {
-                        listContainer.innerHTML = '<div class="text-xs text-text-muted text-center py-6">Пользователи не найдены</div>';
+                        prevCont.innerHTML = `<iframe id="canvas-iframe" class="w-full h-full border-0 bg-white"></iframe>`;
+                        document.getElementById('canvas-iframe').srcdoc = this.currentCode;
                     }
-                } catch(e) {
-                    listContainer.innerHTML = '<div class="text-xs text-red-400 text-center py-6">Ошибка поиска</div>';
                 }
             },
-            selectUser: function(u) {
-                this.selectedUser = u;
-                document.getElementById('messenger-target-info').innerHTML = `
-                    <img src="${u.avatar}" class="w-8 h-8 rounded-full object-cover bg-black shrink-0">
-                    <div class="truncate">
-                        <div class="text-xs font-bold text-white truncate">${u.nickname}</div>
-                        <div class="text-[10px] text-brand-500 font-mono">@${u.username}</div>
+            renderRobloxLuaPreview: function(container, code) {
+                container.innerHTML = `
+                    <div class="flex items-center justify-between px-3 py-2 bg-[#1a1b22] border-b border-white/10 text-[11px] text-gray-400">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <span class="font-semibold text-gray-300 ml-1">Roblox Studio Client Preview</span>
+                        </div>
+                        <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">LUA UI</span>
+                    </div>
+                    <div id="roblox-viewport" class="flex-1 relative flex items-center justify-center p-4 bg-[#181920] overflow-hidden select-none">
+                        <div id="roblox-screen-gui" class="relative w-[480px] h-[320px] bg-[#121318]/90 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                            <div class="text-xs text-gray-500 italic">Рендеринг интерфейса меню...</div>
+                        </div>
                     </div>
                 `;
-                document.getElementById('btn-send-code-msg').disabled = false;
-            },
-            sendCodeToUser: async function() {
-                if (!this.selectedUser) return;
-                const currentUser = App.Storage.getUser();
-                const btn = document.getElementById('btn-send-code-msg');
-                btn.disabled = true;
-                btn.innerText = 'Отправка...';
+                const guiContainer = document.getElementById('roblox-screen-gui');
                 try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/send-code-message`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            senderEmail: currentUser.email,
-                            recipientEmail: this.selectedUser.email,
-                            codeContent: this.codeToSend
-                        })
+                    let mainBg = 'background: rgba(24, 25, 32, 0.95);';
+                    let mainSize = 'width: 320px; height: 220px;';
+                    let buttonLabels = [];
+                    const lines = code.split('\n');
+                    lines.forEach(line => {
+                        if (line.includes('Text') && (line.includes('=') || line.includes('.'))) {
+                            const match = line.match(/Text\s*=\s*["'](.*?)["']/);
+                            if (match) buttonLabels.push(match[1]);
+                        }
                     });
-                    const data = await res.json();
-                    if (data.success) {
-                        alert('Код успешно отправлен пользователю @' + this.selectedUser.username);
-                        this.closeModal();
-                    } else {
-                        alert('Ошибка отправки: ' + (data.error || 'неизвестно'));
-                    }
-                } catch(e) {
-                    alert('Ошибка сети при отправке');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerText = 'Отправить код';
-                }
-            }
+                    guiContainer.innerHTML = `
+                        <div class="absolute inset-0 flex items-center justify-center p-4">
+                            <div class="relative rounded-2xl shadow-2xl border border-white/15 flex flex-col overflow-hidden backdrop-blur-md transition-all animate-pop-in" style="${mainSize} ${mainBg}">
+                                <div class="flex items-center justify-between px-4 py-2.5 bg-black/30 border-b border-white/10 shrink-0">
+                                    <span class="text-xs font-bold text-white tracking-wider uppercase">⚡ ALTRON GUI</span>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+                                    </div>
+                                </div>
+                                <div class="p-4 flex-1 flex flex-col gap-2.5 overflow-y-auto">
+                                    <div class="text-xs font-semibold text-gray-300 mb-1">Панель управления:</div>
+                                    ${buttonLabels.length > 0 ? buttonLabels.map(lbl => `
+                                        <button type="button" onclick="alert('Выполнено: ${lbl}')" class="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-xs font-bold text-white transition-all text-left flex items-center justify-between">
+                                            <span>${lbl}</span>
+                                            <span class="text-[10px] text-brand-400 font-mono">EXEC</span>
+                                        </button>
+                                    `).join('') : `
+                                        <button type="button" onclick="alert('Активировано!')" class="w-full py-2.5 px-3 bg-brand-500 hover:bg-brand-600 rounded-xl text-xs font-bold text-white transition-all text-center shadow-lg">Активировать меню</button>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } catch(e) {}
+            },
+            updateCurrentContent: function(val) { this.currentCode = val; }
         };
 
         App.Settings = {
-            pendingAvatarBase64: null,
-            pendingBackgroundBg: null,
-            pendingStatusData: null,
-            backgroundRemoved: false,
-            statusRemoved: false,
             open: function() {
                 const user = App.Storage.getUser();
                 if(!user) return;
@@ -788,465 +857,64 @@
                 document.getElementById('settings-bio').value = user.bio || '';
                 document.getElementById('settings-birthdate').value = user.birthdate || '';
                 document.getElementById('profile-display-name-title').textContent = user.nickname || 'Шелби Кфг';
-                document.getElementById('settings-username-error').classList.add('hidden');
                 
                 const avatarImg = document.getElementById('settings-avatar-preview');
                 avatarImg.src = user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.nickname || 'User'}&backgroundColor=121212`;
                 
                 document.getElementById('settings-theme-toggle').checked = (user.theme === 'glass');
-
-                const bgPreview = document.getElementById('settings-background-preview');
-                const bgWrapper = document.getElementById('settings-background-wrapper');
-                const bgToApply = user.profileBackground || 'radial-gradient(circle at center, #2d2645 0%, #151419 100%)';
-                
-                if (bgToApply.startsWith('linear-gradient') || bgToApply.startsWith('radial-gradient')) {
-                    bgPreview.src = '';
-                    bgPreview.classList.add('hidden');
-                    bgWrapper.style.background = bgToApply;
-                } else {
-                    bgPreview.src = bgToApply;
-                    bgPreview.classList.remove('hidden');
-                    bgWrapper.style.background = 'transparent';
-                }
-                document.getElementById('btn-remove-background').classList.toggle('hidden', !user.profileBackground);
-
-                this.renderLottiePreview(document.getElementById('settings-status-preview'), user.statusEmoji, 20);
-                document.getElementById('btn-remove-status').classList.toggle('hidden', !user.statusEmoji);
-                
-                this.pendingAvatarBase64 = null;
-                this.pendingBackgroundBg = null;
-                this.pendingStatusData = null;
-                this.backgroundRemoved = false;
-                this.statusRemoved = false;
-
-                if (user.email && user.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
-                    document.getElementById('admin-panel-section').classList.remove('hidden');
-                    this.loadAdminUsersList();
-                } else {
-                    document.getElementById('admin-panel-section').classList.add('hidden');
-                }
                 document.getElementById('settings-modal').classList.add('active');
             },
-            close: function() {
-                document.getElementById('settings-modal').classList.remove('active');
-                const user = App.Storage.getUser();
-                if(user) this.applyTheme(user.theme || 'glass');
-            },
-            openPreferencesModal: function() {
-                const grid = document.getElementById('colors-grid');
-                grid.innerHTML = '';
-                BANNER_COLORS.forEach(c => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'flex items-center gap-2 p-2 rounded-xl border border-white/10 hover:border-indigo-500 transition-all text-left';
-                    btn.style.background = c.bg;
-                    btn.innerHTML = `<div class="w-6 h-6 rounded-lg bg-black/40 flex items-center justify-center text-white shrink-0 text-xs">🎨</div><span class="text-[11px] font-semibold text-white truncate drop-shadow">${c.name}</span>`;
-                    btn.onclick = () => {
-                        this.pendingBackgroundBg = c.bg;
-                        this.backgroundRemoved = false;
-                        const bgPreview = document.getElementById('settings-background-preview');
-                        const bgWrapper = document.getElementById('settings-background-wrapper');
-                        bgPreview.src = '';
-                        bgPreview.classList.add('hidden');
-                        bgWrapper.style.background = c.bg;
-                        document.getElementById('btn-remove-background').classList.remove('hidden');
-                        this.closePreferencesModal();
-                    };
-                    grid.appendChild(btn);
-                });
-                document.getElementById('preferences-modal').classList.add('active');
-            },
-            closePreferencesModal: function() {
-                document.getElementById('preferences-modal').classList.remove('active');
-            },
-            toggleThemePreview: function(e) {
-                this.applyTheme(e.target.checked ? 'glass' : 'solid');
-            },
+            close: function() { document.getElementById('settings-modal').classList.remove('active'); },
             applyTheme: function(themeStr) {
-                if(themeStr === 'glass') {
-                    document.body.classList.add('theme-glass');
-                } else {
-                    document.body.classList.remove('theme-glass');
-                }
-            },
-            renderLottiePreview: function(container, animationData, sizePx) {
-                if (!container) return;
-                container.innerHTML = '';
-                if (!animationData) return;
-                const size = (sizePx || 20) + 'px';
-                let jsonStr = '';
-                if (typeof animationData === 'object' && animationData !== null) {
-                    jsonStr = JSON.stringify(animationData);
-                } else if (typeof animationData === 'string') {
-                    try { jsonStr = JSON.stringify(JSON.parse(animationData)); } catch (err) { jsonStr = animationData; }
-                } else { return; }
-                let dataUrl;
-                try { dataUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(jsonStr))); } catch (e) { return; }
-                container.innerHTML = `<lottie-player src="${dataUrl}" autoplay loop style="width:${size};height:${size};"></lottie-player>`;
-            },
-            handleAvatarSelect: function(e) {
-                const file = e.target.files[0];
-                e.target.value = '';
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const size = Math.min(img.width, img.height);
-                        canvas.width = 256; canvas.height = 256;
-                        ctx.drawImage(img, (img.width - size)/2, (img.height - size)/2, size, size, 0, 0, 256, 256);
-                        this.pendingAvatarBase64 = canvas.toDataURL('image/jpeg', 0.85);
-                        document.getElementById('settings-avatar-preview').src = this.pendingAvatarBase64;
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            },
-            handleBackgroundSelect: function(e) {
-                const file = e.target.files[0];
-                e.target.value = '';
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const maxW = 960;
-                        const scale = Math.min(1, maxW / img.width);
-                        const w = Math.round(img.width * scale);
-                        const h = Math.round(img.height * scale);
-                        const canvas = document.createElement('canvas');
-                        canvas.width = w; canvas.height = h;
-                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                        this.pendingBackgroundBg = canvas.toDataURL('image/jpeg', 0.85);
-                        this.backgroundRemoved = false;
-                        const preview = document.getElementById('settings-background-preview');
-                        const wrapper = document.getElementById('settings-background-wrapper');
-                        preview.src = this.pendingBackgroundBg;
-                        preview.classList.remove('hidden');
-                        wrapper.style.background = 'transparent';
-                        document.getElementById('btn-remove-background').classList.remove('hidden');
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            },
-            removeBackground: function() {
-                this.pendingBackgroundBg = 'radial-gradient(circle at center, #2d2645 0%, #151419 100%)';
-                this.backgroundRemoved = true;
-                const preview = document.getElementById('settings-background-preview');
-                const wrapper = document.getElementById('settings-background-wrapper');
-                preview.src = '';
-                preview.classList.add('hidden');
-                wrapper.style.background = this.pendingBackgroundBg;
-                document.getElementById('btn-remove-background').classList.add('hidden');
-            },
-            removeStatus: function() {
-                this.pendingStatusData = null;
-                this.statusRemoved = true;
-                document.getElementById('settings-status-preview').innerHTML = '';
-                document.getElementById('btn-remove-status').classList.add('hidden');
-            },
-            openLottieGallery: async function() {
-                const modal = document.getElementById('lottie-gallery-modal');
-                const grid = document.getElementById('lottie-gallery-grid');
-                const empty = document.getElementById('lottie-gallery-empty');
-                const loading = document.getElementById('lottie-gallery-loading');
-                grid.innerHTML = '';
-                grid.classList.add('hidden');
-                empty.classList.add('hidden');
-                loading.classList.remove('hidden');
-                modal.classList.add('active');
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/lottie-emojis`);
-                    const data = await res.json();
-                    loading.classList.add('hidden');
-                    if (data.success && data.emojis && data.emojis.length) {
-                        grid.classList.remove('hidden');
-                        data.emojis.forEach(emoji => grid.appendChild(this.buildGalleryCard(emoji)));
-                    } else {
-                        empty.textContent = 'Владелец пока не добавил ни одного эмодзи';
-                        empty.classList.remove('hidden');
-                    }
-                } catch (e) {
-                    loading.classList.add('hidden');
-                    empty.textContent = 'Не удалось загрузить галерею';
-                    empty.classList.remove('hidden');
-                }
-            },
-            buildGalleryCard: function(emoji) {
-                const card = document.createElement('button');
-                card.type = 'button';
-                card.className = 'flex flex-col items-center gap-1.5 bg-surface-200 hover:bg-surface-300 border border-border rounded-xl p-3 transition-colors';
-                const preview = document.createElement('div');
-                preview.style.width = '36px'; preview.style.height = '36px';
-                card.appendChild(preview);
-                this.renderLottiePreview(preview, emoji.animationData, 36);
-                const label = document.createElement('span');
-                label.className = 'text-[10px] text-gray-400 truncate w-full text-center';
-                label.textContent = emoji.name;
-                card.appendChild(label);
-                card.onclick = () => this.selectStatusFromGallery(emoji.animationData);
-                return card;
-            },
-            selectStatusFromGallery: function(animationData) {
-                this.pendingStatusData = animationData;
-                this.statusRemoved = false;
-                this.renderLottiePreview(document.getElementById('settings-status-preview'), animationData, 20);
-                document.getElementById('btn-remove-status').classList.remove('hidden');
-                this.closeLottieGallery();
-            },
-            closeLottieGallery: function() {
-                document.getElementById('lottie-gallery-modal').classList.remove('active');
-            },
-            openProfileEmojiModal: async function() {
-                const modal = document.getElementById('profile-emoji-modal');
-                const grid = document.getElementById('profile-emoji-grid');
-                const empty = document.getElementById('profile-emoji-empty');
-                grid.innerHTML = '';
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/lottie-emojis`);
-                    const data = await res.json();
-                    if (data.success && data.emojis && data.emojis.length) {
-                        grid.classList.remove('hidden');
-                        empty.classList.add('hidden');
-                        data.emojis.forEach(emoji => {
-                            const btn = document.createElement('button');
-                            btn.type = 'button';
-                            btn.className = 'flex flex-col items-center gap-1 bg-surface-200 hover:bg-surface-300 border border-border rounded-xl p-2.5 transition-colors cursor-pointer';
-                            const preview = document.createElement('div');
-                            preview.style.width = '32px'; preview.style.height = '32px';
-                            btn.appendChild(preview);
-                            this.renderLottiePreview(preview, emoji.animationData, 32);
-                            const nameSpan = document.createElement('span');
-                            nameSpan.className = 'text-[9px] text-gray-400 truncate w-full text-center';
-                            nameSpan.textContent = emoji.name;
-                            btn.appendChild(nameSpan);
-                            btn.onclick = () => {
-                                this.insertBioEmoji(emoji.animationData);
-                                this.closeProfileEmojiModal();
-                            };
-                            grid.appendChild(btn);
-                        });
-                    } else {
-                        grid.classList.add('hidden');
-                        empty.classList.remove('hidden');
-                    }
-                } catch(e) {
-                    grid.classList.add('hidden');
-                    empty.classList.remove('hidden');
-                }
-                modal.classList.add('active');
-            },
-            closeProfileEmojiModal: function() {
-                document.getElementById('profile-emoji-modal').classList.remove('active');
-            },
-            insertBioEmoji: function(animationData) {
-                const input = document.getElementById('settings-bio');
-                let jsonStr = typeof animationData === 'object' ? JSON.stringify(animationData) : animationData;
-                const tag = `[LOTTIE:${jsonStr}]`;
-                const start = input.selectionStart;
-                const end = input.selectionEnd;
-                const val = input.value;
-                input.value = val.substring(0, start) + tag + val.substring(end);
-                input.selectionStart = input.selectionEnd = start + tag.length;
-                input.focus();
-            },
-            handleAdminJsonUpload: async function(e) {
-                const files = Array.from(e.target.files);
-                e.target.value = '';
-                if (!files || files.length === 0) return;
-                const user = App.Storage.getUser();
-                for (let file of files) {
-                    try {
-                        const text = await file.text();
-                        const jsonObj = JSON.parse(text);
-                        await fetch(`${CONFIG.BACKEND_URL}/admin/add-lottie-emoji`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ adminEmail: user.email, name: file.name.replace('.json',''), animationData: jsonObj })
-                        });
-                    } catch(err) {}
-                }
-                alert('Эмодзи успешно загружены на сервер!');
+                if(themeStr === 'glass') document.body.classList.add('theme-glass');
+                else document.body.classList.remove('theme-glass');
             },
             save: async function() {
                 const user = App.Storage.getUser();
                 if(!user) return;
-                const btn = document.getElementById('btn-save-settings');
                 const newNickname = document.getElementById('settings-nickname').value.trim();
                 const newUsername = document.getElementById('settings-username').value.trim();
                 const newBio = document.getElementById('settings-bio').value.trim();
                 const newBirthdate = document.getElementById('settings-birthdate').value;
-                const newTheme = document.getElementById('settings-theme-toggle').checked ? 'glass' : 'solid';
-                const errorEl = document.getElementById('settings-username-error');
-                errorEl.classList.add('hidden');
-                btn.disabled = true;
-                btn.innerText = 'Сохранение...';
                 try {
-                    const payload = {
-                        email: user.email,
-                        nickname: newNickname || user.nickname,
-                        username: newUsername,
-                        bio: newBio,
-                        birthdate: newBirthdate
-                    };
-                    if (this.pendingAvatarBase64) payload.avatar = this.pendingAvatarBase64;
-                    if (this.pendingBackgroundBg !== null) payload.profileBackground = this.pendingBackgroundBg;
-                    else if (this.backgroundRemoved) payload.profileBackground = null;
-
-                    if (this.pendingStatusData !== null) payload.statusEmoji = this.pendingStatusData;
-                    else if (this.statusRemoved) payload.statusEmoji = null;
-
                     const res = await fetch(`${CONFIG.BACKEND_URL}/save-profile`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify({ email: user.email, nickname: newNickname || user.nickname, username: newUsername, bio: newBio, birthdate: newBirthdate })
                     });
                     const data = await res.json();
                     if (data.success) {
-                        data.profile.theme = newTheme;
                         App.Storage.saveUser(data.profile);
-                        this.applyTheme(newTheme);
                         App.Auth.updateUIProfile(data.profile);
                         this.close();
-                    } else if (data.error && data.error.toLowerCase().includes('юзернейм')) {
-                        errorEl.textContent = data.error;
-                        errorEl.classList.remove('hidden');
-                    } else {
-                        alert('Ошибка сохранения: ' + (data.error || 'неизвестная ошибка'));
                     }
-                } catch (e) {
-                    alert('Ошибка сохранения: ' + e.message);
-                } finally {
-                    btn.disabled = false;
-                    btn.innerText = 'Сохранить';
-                }
-            },
-            loadAdminUsersList: async function() {
-                const user = App.Storage.getUser();
-                const container = document.getElementById('admin-users-list');
-                container.innerHTML = '<div class="text-xs text-gray-500">Загрузка пользователей...</div>';
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/admin/get-users`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ adminEmail: user.email })
-                    });
-                    const data = await res.json();
-                    if (data.success && data.users) {
-                        container.innerHTML = '';
-                        data.users.forEach(u => {
-                            const item = document.createElement('div');
-                            item.className = "flex items-center justify-between bg-surface-300 p-2.5 rounded-xl border border-border text-xs";
-                            item.innerHTML = `
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <img src="${u.avatar}" class="w-7 h-7 rounded-full object-cover bg-black flex-shrink-0">
-                                    <div class="truncate">
-                                        <div class="font-bold text-white truncate">${u.nickname}</div>
-                                        <div class="text-[10px] text-gray-400 truncate">${u.email}</div>
-                                    </div>
-                                </div>
-                                <label class="toggle-switch shrink-0 ml-2">
-                                    <input type="checkbox" ${u.isUncensored ? 'checked' : ''} onchange="App.Settings.toggleUserDevMode('${u.email}', this.checked)">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            `;
-                            container.appendChild(item);
-                        });
-                    }
-                } catch(e) {
-                    container.innerHTML = '<div class="text-xs text-red-400">Ошибка загрузки списка</div>';
-                }
-            },
-            toggleUserDevMode: async function(targetEmail, isChecked) {
-                const user = App.Storage.getUser();
-                try {
-                    await fetch(`${CONFIG.BACKEND_URL}/admin/toggle-devmode`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ adminEmail: user.email, targetEmail, isUncensored: isChecked })
-                    });
                 } catch(e) {}
             }
         };
 
         App.Storage = {
             getUser: () => { try { return JSON.parse(localStorage.getItem('altron_user')); } catch(e) { return null; } },
-            saveUser: (u) => {
-                const old = App.Storage.getUser();
-                if(old && old.theme && !u.theme) u.theme = old.theme;
-                if(!u.theme) u.theme = 'glass';
-                if(!u.nickname) u.nickname = 'Шелби Кфг';
-                localStorage.setItem('altron_user', JSON.stringify(u));
-            },
-            clearUser: () => {
-                const u = App.Storage.getUser();
-                if (u && u.email) localStorage.removeItem('altron_chats_' + u.email);
-                localStorage.removeItem('altron_user');
-            },
-            syncChatsToBackend: async function() {
-                const user = this.getUser();
-                if (user && user.email) {
-                    try {
-                        await fetch(`${CONFIG.BACKEND_URL}/save-chats`, {
-                            method: 'POST', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email: user.email, chats: this.getChats() })
-                        });
-                    } catch (e) {}
-                }
-            },
-            fetchChatsFromBackend: async function() {
-                const user = this.getUser();
-                if (user && user.email) {
-                    try {
-                        const res = await fetch(`${CONFIG.BACKEND_URL}/get-chats`, {
-                            method: 'POST', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email: user.email })
-                        });
-                        const data = await res.json();
-                        if (data.success && data.chats) localStorage.setItem('altron_chats_' + user.email, JSON.stringify(data.chats));
-                    } catch (e) {}
-                }
-            },
-            getChats: function() {
-                const user = this.getUser();
-                const key = user ? 'altron_chats_' + user.email : 'altron_chats';
-                try { return JSON.parse(localStorage.getItem(key)) || []; } catch(e) { return []; }
-            },
-            saveChats: function(chats) {
-                const user = this.getUser();
-                const key = user ? 'altron_chats_' + user.email : 'altron_chats';
-                localStorage.setItem(key, JSON.stringify(chats));
-                this.syncChatsToBackend();
-            },
+            saveUser: (u) => { localStorage.setItem('altron_user', JSON.stringify(u)); },
+            clearUser: () => { localStorage.removeItem('altron_user'); },
+            getChats: () => { try { return JSON.parse(localStorage.getItem('altron_chats')) || []; } catch(e) { return []; } },
+            saveChats: (c) => { localStorage.setItem('altron_chats', JSON.stringify(c)); },
             createChatSession: function() {
                 const chatId = 'chat_' + Date.now();
-                const newChat = { id: chatId, title: 'Новый диалог', messages: [], timestamp: Date.now() };
+                const newChat = { id: chatId, title: 'Новый диалог', messages: [] };
                 const chats = this.getChats();
                 chats.unshift(newChat);
                 this.saveChats(chats);
                 return chatId;
             },
-            getChatById: function(id) { return this.getChats().find(c => c.id === id) || null; },
+            getChatById: (id) => App.Storage.getChats().find(c => c.id === id) || null,
             addMessageToChat: function(chatId, role, content, images = []) {
                 const chats = this.getChats();
-                const chatIndex = chats.findIndex(c => c.id === chatId);
-                if (chatIndex !== -1) {
-                    chats[chatIndex].messages.push({ role, content, images, timestamp: Date.now() });
-                    if (role === 'user' && chats[chatIndex].messages.length <= 2) {
-                        let title = typeof content === 'string' ? content.substring(0, 30) : 'Запрос с файлами';
-                        if (title.length > 30) title += '...';
-                        chats[chatIndex].title = title || 'Диалог с файлами';
-                    }
-                    chats[chatIndex].timestamp = Date.now();
-                    const activeChat = chats.splice(chatIndex, 1)[0];
-                    chats.unshift(activeChat);
+                const chat = chats.find(c => c.id === chatId);
+                if (chat) {
+                    chat.messages.push({ role, content, images });
+                    if (role === 'user' && chat.messages.length <= 2) chat.title = content.substring(0, 30) + '...';
                     this.saveChats(chats);
-                    return activeChat;
                 }
-                return null;
             }
         };
 
@@ -1254,70 +922,42 @@
             pendingFiles: [],
             handleFileSelect: async function(e) {
                 const files = e.target.files;
-                if (!files || files.length === 0) return;
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    if (file.type.startsWith('image/')) {
-                        const base64 = await this.fileToBase64(file);
-                        this.pendingFiles.push({ type: 'image', name: file.name, data: base64 });
-                    } else {
-                        const text = await this.readTextFile(file);
-                        this.pendingFiles.push({ type: 'text', name: file.name, data: text });
-                    }
+                for (let file of files) {
+                    const text = await file.text();
+                    this.pendingFiles.push({ type: 'text', name: file.name, data: text });
                 }
                 e.target.value = '';
                 this.renderPreviews();
-                App.UI.autoResizeTextarea();
             },
             renderPreviews: function() {
                 const container = document.getElementById('file-preview-container');
                 container.innerHTML = '';
                 if (this.pendingFiles.length > 0) {
                     container.classList.remove('hidden');
-                    this.pendingFiles.forEach((file, index) => {
-                        const badge = document.createElement('div');
-                        badge.className = 'relative flex items-center gap-2 bg-surface-300 border border-border px-3 py-1.5 rounded-xl text-xs font-semibold text-white animate-pop-in shrink-0';
-                        let iconHtml = file.type === 'image' ? `<img src="${file.data}" class="w-5 h-5 rounded-md object-cover">` : `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>`;
-                        badge.innerHTML = `${iconHtml}<span class="max-w-[100px] truncate">${file.name}</span><div class="absolute -top-1.5 -right-1.5 bg-surface-300 hover:bg-red-500 text-white border border-border rounded-full w-5 h-5 flex items-center justify-center text-[10px] cursor-pointer transition-colors" onclick="App.FileHandler.removeFile(${index})">✕</div>`;
-                        container.appendChild(badge);
+                    this.pendingFiles.forEach((f, idx) => {
+                        container.innerHTML += `<div class="bg-surface-300 border border-border px-3 py-1.5 rounded-xl text-xs text-white">${f.name}</div>`;
                     });
                 } else { container.classList.add('hidden'); }
             },
-            removeFile: function(index) { this.pendingFiles.splice(index, 1); this.renderPreviews(); App.UI.autoResizeTextarea(); },
-            clearFiles: function() { this.pendingFiles = []; this.renderPreviews(); },
-            fileToBase64: (file) => new Promise((resolve, reject) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => resolve(r.result); r.onerror = e => reject(e); }),
-            readTextFile: (file) => new Promise((resolve, reject) => { const r = new FileReader(); r.readAsText(file); r.onload = () => resolve(r.result); r.onerror = e => reject(e); })
+            clearFiles: function() { this.pendingFiles = []; this.renderPreviews(); }
         };
 
         App.Auth = {
             pendingData: null,
-            showError: function(msg) {
-                document.getElementById('auth-error-message').textContent = msg;
-                document.getElementById('auth-error-box').classList.remove('hidden');
-                setTimeout(() => { document.getElementById('auth-error-box').classList.add('hidden'); }, 5000);
-            },
             handleSignupSubmit: async function(e) {
                 e.preventDefault();
-                const nickname = document.getElementById('reg-name').value.trim();
                 const email = document.getElementById('reg-email').value.trim();
-                const btn = document.getElementById('btn-signup');
-                this.pendingData = { type: 'signup', email, nickname };
-                btn.disabled = true; btn.innerText = 'Отправка...';
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/send-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
-                    if (res.ok) this.showCodeScreen(email); else throw new Error();
-                } catch (err) { this.showError("Не удалось связаться с сервером."); } finally { btn.disabled = false; btn.innerText = 'Зарегистрироваться'; }
+                const nickname = document.getElementById('reg-name').value.trim();
+                this.pendingData = { email, nickname };
+                await fetch(`${CONFIG.BACKEND_URL}/send-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                this.showCodeScreen(email);
             },
             handleSigninSubmit: async function(e) {
                 e.preventDefault();
                 const email = document.getElementById('login-email').value.trim();
-                const btn = document.getElementById('btn-signin');
-                this.pendingData = { type: 'signin', email, nickname: email.split('@')[0] };
-                btn.disabled = true; btn.innerText = 'Отправка...';
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/send-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
-                    if (res.ok) this.showCodeScreen(email); else throw new Error();
-                } catch (err) { this.showError("Не удалось отправить код."); } finally { btn.disabled = false; btn.innerText = 'Получить код'; }
+                this.pendingData = { email, nickname: email.split('@')[0] };
+                await fetch(`${CONFIG.BACKEND_URL}/send-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                this.showCodeScreen(email);
             },
             showCodeScreen: function(email) {
                 document.getElementById('sliding-container').classList.add('hidden');
@@ -1327,92 +967,45 @@
             backToAuthSlider: function() {
                 document.getElementById('step-code').classList.add('hidden');
                 document.getElementById('sliding-container').classList.remove('hidden');
-                document.getElementById('input-code').value = '';
-                this.pendingData = null;
             },
             handleCodeSubmit: async function(e) {
                 e.preventDefault();
-                if (!this.pendingData) return this.showError("Сессия истекла.");
                 const code = document.getElementById('input-code').value.trim();
-                const btn = document.getElementById('btn-code');
-                const origText = btn.innerText;
-                btn.disabled = true; btn.innerText = 'Проверка...';
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/verify-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: this.pendingData.email, code: code }) });
-                    const data = await res.json().catch(()=>null);
-                    if (res.ok) {
-                        const avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${this.pendingData.nickname}&backgroundColor=121212`;
-                        const saveRes = await fetch(`${CONFIG.BACKEND_URL}/save-profile`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: this.pendingData.email, nickname: this.pendingData.nickname, avatar: avatar }) });
-                        const profileData = await saveRes.json();
-                        const userData = profileData.profile || { email: this.pendingData.email, nickname: this.pendingData.nickname, avatar: avatar, isUncensored: false };
-                        userData.theme = 'glass';
-                        if(!userData.nickname) userData.nickname = 'Шелби Кфг';
-                        App.Storage.saveUser(userData);
-                        await this.completeAuth(userData, false);
-                    } else { this.showError(data?.error || "Неверный код"); }
-                } catch (err) { this.showError("Ошибка соединения."); } finally { btn.disabled = false; btn.innerText = origText; }
+                const res = await fetch(`${CONFIG.BACKEND_URL}/verify-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: this.pendingData.email, code }) });
+                if (res.ok) {
+                    const avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${this.pendingData.nickname}`;
+                    const userData = { email: this.pendingData.email, nickname: this.pendingData.nickname, avatar, theme: 'glass' };
+                    App.Storage.saveUser(userData);
+                    this.completeAuth(userData);
+                }
             },
             syncProfileWithBackend: async function(email) {
                 try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/get-profile`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email }) });
+                    const res = await fetch(`${CONFIG.BACKEND_URL}/get-profile`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
                     if (res.ok) {
                         const data = await res.json();
-                        const userLocal = App.Storage.getUser();
-                        if(userLocal && userLocal.theme) data.profile.theme = userLocal.theme;
-                        if(!data.profile.nickname) data.profile.nickname = 'Шелби Кфг';
                         App.Storage.saveUser(data.profile);
-                        await this.completeAuth(data.profile, true);
+                        this.completeAuth(data.profile);
                     } else { this.logout(); }
-                } catch (e) { await this.completeAuth(App.Storage.getUser(), true); }
+                } catch(e) { this.completeAuth(App.Storage.getUser()); }
             },
             updateUIProfile: function(userData) {
                 document.getElementById('ui-nickname').textContent = userData.nickname || 'Шелби Кфг';
-                if(document.getElementById('ui-avatar')) document.getElementById('ui-avatar').src = userData.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${userData.nickname || 'User'}&backgroundColor=121212`;
-                if(document.getElementById('mobile-ui-avatar')) document.getElementById('mobile-ui-avatar').src = userData.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${userData.nickname || 'User'}&backgroundColor=121212`;
-
-                [document.getElementById('ui-status-container'), document.getElementById('mobile-ui-status-container')].forEach(c => {
-                    if (c) App.Settings.renderLottiePreview(c, userData.statusEmoji, 20);
-                });
-
-                const badge = document.getElementById('ui-badge');
-                if (userData.isUncensored) {
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
+                document.getElementById('ui-avatar').src = userData.avatar;
+                document.getElementById('mobile-ui-avatar').src = userData.avatar;
             },
-            completeAuth: async function(userData, skipAnimation = false) {
+            completeAuth: function(userData) {
                 this.updateUIProfile(userData);
                 App.Settings.applyTheme(userData.theme || 'glass');
-                await App.Storage.fetchChatsFromBackend();
-                const authOverlay = document.getElementById('auth-overlay');
-                const appContainer = document.getElementById('chatgpt-app');
-                if (skipAnimation) {
-                    authOverlay.style.display = 'none';
-                    appContainer.classList.remove('hidden');
-                    appContainer.style.opacity = '1';
-                } else {
-                    authOverlay.style.opacity = '0';
-                    setTimeout(() => {
-                        authOverlay.style.display = 'none';
-                        appContainer.classList.remove('hidden');
-                        setTimeout(() => appContainer.style.opacity = '1', 50);
-                    }, 500);
-                }
+                document.getElementById('auth-overlay').style.display = 'none';
+                const app = document.getElementById('chatgpt-app');
+                app.classList.remove('hidden');
+                setTimeout(() => app.style.opacity = '1', 50);
                 App.Chat.init();
             },
             logout: function() {
                 App.Storage.clearUser();
-                document.body.classList.remove('theme-glass');
-                const authOverlay = document.getElementById('auth-overlay');
-                const appContainer = document.getElementById('chatgpt-app');
-                appContainer.style.opacity = '0';
-                setTimeout(() => {
-                    appContainer.classList.add('hidden');
-                    authOverlay.style.display = 'flex';
-                    this.backToAuthSlider();
-                    setTimeout(() => authOverlay.style.opacity = '1', 50);
-                }, 500);
+                location.reload();
             }
         };
 
@@ -1422,53 +1015,32 @@
             init: function() {
                 this.renderHistoryList();
                 const chats = App.Storage.getChats();
-                if (chats.length === 0) { this.createNewSession(); } else { this.loadSession(chats[0].id); }
+                if (chats.length === 0) this.createNewSession();
+                else this.loadSession(chats[0].id);
             },
             createNewSession: function() {
-                if (this.isGenerating) return;
-                const newId = App.Storage.createChatSession();
-                this.loadSession(newId);
-                if(window.innerWidth < 768) App.UI.toggleMobileSidebar();
+                const id = App.Storage.createChatSession();
+                this.loadSession(id);
             },
             loadSession: function(id) {
-                if (this.isGenerating) return;
                 this.currentSessionId = id;
-                const chatData = App.Storage.getChatById(id);
+                const chat = App.Storage.getChatById(id);
                 const list = document.getElementById('messages-list');
                 const welcome = document.getElementById('welcome-screen');
                 list.innerHTML = '';
-                if (!chatData || !chatData.messages || chatData.messages.length === 0) {
-                    welcome.classList.remove('hidden');
-                } else {
+                if (!chat || chat.messages.length === 0) welcome.classList.remove('hidden');
+                else {
                     welcome.classList.add('hidden');
-                    chatData.messages.forEach(msg => {
-                        if (msg.role !== 'system') {
-                            let textContent = msg.content;
-                            if (Array.isArray(msg.content)) {
-                                const textObj = msg.content.find(item => item.type === 'text');
-                                textContent = textObj ? textObj.text : '';
-                            }
-                            this.appendMessageToDOM(msg.role, textContent, msg.images, true);
-                        }
-                    });
+                    chat.messages.forEach(m => this.appendMessageToDOM(m.role, m.content, m.images, true));
                 }
                 this.renderHistoryList();
-                this.scrollToBottom();
             },
             renderHistoryList: function() {
                 const container = document.getElementById('history-container');
                 const chats = App.Storage.getChats();
                 container.innerHTML = '';
-                if (chats.length === 0) {
-                    container.innerHTML = '<div class="text-xs text-text-muted px-3 py-2">Нет недавних диалогов</div>';
-                    return;
-                }
-                chats.forEach(chat => {
-                    const div = document.createElement('div');
-                    div.className = `history-item ${chat.id === this.currentSessionId ? 'active' : ''}`;
-                    div.onclick = () => this.loadSession(chat.id);
-                    div.innerHTML = `<span class="truncate">${chat.title || 'Новый диалог'}</span>`;
-                    container.appendChild(div);
+                chats.forEach(c => {
+                    container.innerHTML += `<div class="history-item ${c.id === this.currentSessionId ? 'active' : ''}" onclick="App.Chat.loadSession('${c.id}')"><span class="truncate">${c.title}</span></div>`;
                 });
             },
             handleKeydown: function(e) {
@@ -1477,305 +1049,67 @@
                     this.sendMessage();
                 }
             },
-            openEmojiModal: async function() {
-                const modal = document.getElementById('chat-emoji-modal');
-                const grid = document.getElementById('chat-emoji-grid');
-                const empty = document.getElementById('chat-emoji-empty');
-                grid.innerHTML = '';
-                try {
-                    const res = await fetch(`${CONFIG.BACKEND_URL}/lottie-emojis`);
-                    const data = await res.json();
-                    if (data.success && data.emojis && data.emojis.length) {
-                        grid.classList.remove('hidden');
-                        empty.classList.add('hidden');
-                        data.emojis.forEach(emoji => {
-                            const btn = document.createElement('button');
-                            btn.type = 'button';
-                            btn.className = 'flex flex-col items-center gap-1 bg-surface-200 hover:bg-surface-300 border border-border rounded-xl p-2.5 transition-colors cursor-pointer';
-                            const preview = document.createElement('div');
-                            preview.style.width = '32px'; preview.style.height = '32px';
-                            btn.appendChild(preview);
-                            App.Settings.renderLottiePreview(preview, emoji.animationData, 32);
-                            const nameSpan = document.createElement('span');
-                            nameSpan.className = 'text-[9px] text-gray-400 truncate w-full text-center';
-                            nameSpan.textContent = emoji.name;
-                            btn.appendChild(nameSpan);
-                            btn.onclick = () => {
-                                this.insertEmojiIntoInput(emoji.animationData);
-                                this.closeEmojiModal();
-                            };
-                            grid.appendChild(btn);
-                        });
-                    } else {
-                        grid.classList.add('hidden');
-                        empty.classList.remove('hidden');
-                    }
-                } catch(e) {
-                    grid.classList.add('hidden');
-                    empty.classList.remove('hidden');
-                }
-                modal.classList.add('active');
-            },
-            closeEmojiModal: function() {
-                document.getElementById('chat-emoji-modal').classList.remove('active');
-            },
-            insertEmojiIntoInput: function(animationData) {
-                const input = document.getElementById('message-input');
-                let jsonStr = '';
-                if (typeof animationData === 'object') jsonStr = JSON.stringify(animationData);
-                else jsonStr = animationData;
-                
-                const emojiTag = `[LOTTIE:${jsonStr}]`;
-                const start = input.selectionStart;
-                const end = input.selectionEnd;
-                const val = input.value;
-                input.value = val.substring(0, start) + emojiTag + val.substring(end);
-                input.selectionStart = input.selectionEnd = start + emojiTag.length;
-                input.focus();
-                App.UI.autoResizeTextarea();
-            },
             sendMessage: async function() {
                 const input = document.getElementById('message-input');
                 let text = input.value.trim();
-                const files = App.FileHandler.pendingFiles;
-                if ((!text && files.length === 0) || this.isGenerating) return;
+                if (!text && App.FileHandler.pendingFiles.length === 0) return;
                 document.getElementById('welcome-screen').classList.add('hidden');
                 input.value = '';
-                this.isGenerating = true;
-                this.toggleSendButton(false);
-                const attachedImages = files.filter(f => f.type === 'image').map(f => f.data);
-                let systemFilePrompt = "";
-                const textFiles = files.filter(f => f.type === 'text');
-                if (textFiles.length > 0) {
-                    systemFilePrompt = "\n\n--- ПРИКРЕПЛЕННЫЕ ФАЙЛЫ ---\n";
-                    textFiles.forEach(f => {
-                        systemFilePrompt += `\n[Файл: ${f.name}]:\n${f.data}\n`;
-                    });
-                    systemFilePrompt += "--- КОНЕЦ ФАЙЛОВ ---\nУчитывай содержимое при ответе.";
-                    text += `\n\n*(Прикреплено файлов: ${textFiles.length})*`;
-                }
-                this.appendMessageToDOM('user', text, attachedImages);
-                App.Storage.addMessageToChat(this.currentSessionId, 'user', text, attachedImages);
-                this.renderHistoryList();
-                App.FileHandler.clearFiles();
-                App.UI.autoResizeTextarea();
+                this.appendMessageToDOM('user', text);
+                App.Storage.addMessageToChat(this.currentSessionId, 'user', text);
+                
                 const indicatorId = this.addTypingIndicator();
-                const currentChat = App.Storage.getChatById(this.currentSessionId);
-                const user = App.Storage.getUser();
-                const currentSystemPrompt = (user && user.isUncensored) ? CONFIG.UNCENSORED_PROMPT : CONFIG.SYSTEM_PROMPT;
-                const apiMessages = [{ role: 'system', content: currentSystemPrompt }];
-                currentChat.messages.slice(-10).forEach(msg => {
-                    if (msg.role === 'user' && msg.images && msg.images.length > 0) {
-                        const contentArr = [{ type: 'text', text: msg.content || '' }];
-                        msg.images.forEach(img => contentArr.push({ type: 'image_url', image_url: { url: img } }));
-                        apiMessages.push({ role: 'user', content: contentArr });
-                    } else {
-                        apiMessages.push({ role: msg.role, content: msg.content });
-                    }
-                });
-                if (systemFilePrompt !== "") {
-                    const lastMsg = apiMessages[apiMessages.length - 1];
-                    if (Array.isArray(lastMsg.content)) {
-                        lastMsg.content[0].text += systemFilePrompt;
-                    } else {
-                        lastMsg.content += systemFilePrompt;
-                    }
-                }
                 try {
                     const res = await fetch(CONFIG.API_URL, {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${CONFIG.API_KEY}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ model: CONFIG.MODEL, messages: apiMessages, temperature: 0.7, stream: false })
+                        body: JSON.stringify({ model: CONFIG.MODEL, messages: [{ role: 'user', content: text }] })
                     });
                     document.getElementById(indicatorId).remove();
                     const data = await res.json();
-                    if (data.choices && data.choices[0]) {
-                        const aiText = data.choices[0].message.content;
-                        this.appendMessageToDOM('assistant', aiText);
-                        App.Storage.addMessageToChat(this.currentSessionId, 'assistant', aiText);
-                    } else {
-                        throw new Error(data.error?.message || "Ошибка API");
-                    }
-                } catch (err) {
-                    if (document.getElementById(indicatorId)) document.getElementById(indicatorId).remove();
-                    this.appendMessageToDOM('error', 'Ошибка: ' + err.message);
-                } finally {
-                    this.isGenerating = false;
-                    App.UI.autoResizeTextarea();
-                    this.scrollToBottom();
-                    if (window.innerWidth >= 768) input.focus();
+                    const aiText = data.choices[0].message.content;
+                    this.appendMessageToDOM('assistant', aiText);
+                    App.Storage.addMessageToChat(this.currentSessionId, 'assistant', aiText);
+                } catch(e) {
+                    document.getElementById(indicatorId).remove();
+                    this.appendMessageToDOM('error', 'Ошибка запроса к ИИ');
                 }
             },
             appendMessageToDOM: function(role, content, images = [], skipAnim = false) {
                 const list = document.getElementById('messages-list');
                 const div = document.createElement('div');
                 div.className = `w-full ${role === 'user' ? 'flex justify-end' : ''}`;
-                const aiAvatar = `<div class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white text-black flex-shrink-0 flex items-center justify-center shadow-lg border border-white/20"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>`;
-                const userAvatarUrl = App.Storage.getUser()?.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=User&backgroundColor=121212';
-                const userAvatar = `<img src="${userAvatarUrl}" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover flex-shrink-0 shadow-lg border border-border bg-black">`;
-                const parsedContent = role === 'error' ? `<span class="text-red-400 font-bold">${content}</span>` : this.parseMarkdown(content);
-                let imagesHtml = '';
-                if (images && images.length > 0) {
-                    imagesHtml = `<div class="flex flex-wrap gap-2 mb-3 mt-1">`;
-                    images.forEach(imgData => {
-                        imagesHtml += `<img src="${imgData}" class="w-48 h-auto max-h-64 object-cover rounded-xl border border-border shadow-md cursor-pointer" onclick="window.open(this.src)">`;
-                    });
-                    imagesHtml += `</div>`;
-                }
-                const contentBody = role === 'user' ? `<div class="user-message-bubble">${imagesHtml}${parsedContent}</div>` : `${imagesHtml}${parsedContent}`;
-                div.innerHTML = `
-                    <div class="max-w-3xl mx-auto px-4 md:px-8 py-5 flex gap-4 md:gap-5 w-full ${skipAnim ? '' : 'animate-fade-in'} ${role === 'user' ? 'flex-row-reverse' : ''}">
-                        ${role === 'user' ? userAvatar : (role === 'error' ? '<div class="w-9 h-9 bg-red-900 rounded-full flex items-center justify-center text-red-200 font-bold text-xl flex-shrink-0 shadow-md">!</div>' : aiAvatar)}
-                        <div class="flex-1 min-w-0 pt-0.5 ${role === 'user' ? 'text-right' : ''}">
-                            <div class="markdown-body" style="word-break: break-word;">${contentBody}</div>
-                        </div>
-                    </div>`;
+                const parsed = this.parseMarkdown(content);
+                div.innerHTML = `<div class="max-w-3xl mx-auto px-4 md:px-8 py-5 flex gap-4 w-full ${role === 'user' ? 'flex-row-reverse' : ''}"><div class="markdown-body">${parsed}</div></div>`;
                 list.appendChild(div);
-                this.scrollToBottom();
             },
             addTypingIndicator: function() {
                 const id = 'typing-' + Date.now();
                 const list = document.getElementById('messages-list');
-                const div = document.createElement('div');
-                div.id = id;
-                div.className = "w-full animate-fade-in";
-                const aiAvatar = `<div class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white text-black flex-shrink-0 flex items-center justify-center shadow-lg border border-white/20"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>`;
-                div.innerHTML = `<div class="max-w-3xl mx-auto px-4 md:px-8 py-5 flex gap-4 md:gap-5">${aiAvatar}<div class="flex items-center gap-1.5 h-9 pt-1"><div class="w-2.5 h-2.5 bg-brand-500 rounded-full animate-bounce"></div><div class="w-2.5 h-2.5 bg-brand-500 rounded-full animate-bounce" style="animation-delay:0.15s"></div><div class="w-2.5 h-2.5 bg-brand-500 rounded-full animate-bounce" style="animation-delay:0.3s"></div></div></div>`;
-                list.appendChild(div);
-                this.scrollToBottom();
+                list.innerHTML += `<div id="${id}" class="p-6 text-text-muted text-xs">ALTRON думает...</div>`;
                 return id;
-            },
-            scrollToBottom: function() {
-                const feed = document.getElementById('chat-feed');
-                setTimeout(() => { feed.scrollTop = feed.scrollHeight; }, 50);
-            },
-            toggleSendButton: function(force = null) {
-                const input = document.getElementById('message-input');
-                const hasContent = input.value.trim().length > 0 || App.FileHandler.pendingFiles.length > 0;
-                const shouldShow = force !== null ? force : hasContent;
-                const btnSend = document.getElementById('btn-send');
-                const btnVoice = document.getElementById('btn-voice-mode');
-                if (shouldShow) {
-                    btnVoice.classList.add('hidden');
-                    btnSend.classList.remove('hidden');
-                    btnSend.classList.add('send-btn-active');
-                } else {
-                    btnSend.classList.add('hidden');
-                    btnSend.classList.remove('send-btn-active');
-                    btnVoice.classList.remove('hidden');
-                }
             },
             parseMarkdown: function(text) {
                 if (!text) return '';
                 let html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                
-                html = html.replace(/\[LOTTIE:(.*?)\]/g, (match, jsonStr) => {
-                    let dataUrl = '';
-                    try {
-                        const parsed = JSON.parse(jsonStr);
-                        dataUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(parsed))));
-                    } catch(e) {
-                        dataUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(jsonStr)));
-                    }
-                    return `<span class="inline-flex items-center align-middle mx-1"><lottie-player src="${dataUrl}" autoplay loop style="width:26px;height:26px;display:inline-block;"></lottie-player></span>`;
-                });
-
                 html = html.replace(/```(.*?)?\n([\s\S]*?)```/g, (match, lang, code) => {
-                    const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
-                    const safeLang = lang || 'txt';
-                    const escapedCodeForCanvas = code.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    return `<div class="code-block-wrapper my-4 rounded-xl border border-border shadow-lg overflow-hidden relative text-left">
-                        <div class="flex items-center justify-between px-4 py-2 bg-surface-300 border-b border-border text-xs font-bold text-gray-400">
-                            <span class="uppercase tracking-wider">${lang || 'TEXT'}</span>
-                            <div class="flex items-center gap-3">
-                                <button type="button" onclick="App.Canvas.open(document.getElementById('${blockId}').textContent, '${safeLang}', '${lang ? lang.toUpperCase() + ' Скрипт' : 'Канвас Код'}')" class="flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>Канвас</span></button>
-                                <button type="button" onclick="App.UI.copyCode(this, '${blockId}')" class="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Копировать</span></button>
-                                <button type="button" onclick="App.UI.downloadCode('${blockId}', '${safeLang}')" class="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer text-brand-500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>Скачать</span></button>
-                            </div>
-                        </div>
-                        <div class="p-4 overflow-x-auto text-[14px] font-mono"><code id="${blockId}">${code}</code></div>
-                    </div>`;
+                    const id = 'code-' + Math.random().toString(36).substr(2, 9);
+                    return `<div class="my-4 rounded-xl border border-border bg-black p-4 font-mono text-xs"><pre><code id="${id}">${code}</code></pre><button onclick="App.Canvas.open(document.getElementById('${id}').textContent, '${lang || 'txt'}')" class="mt-2 text-indigo-400">Открыть в Канвас</button></div>`;
                 });
-                html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
-                html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-                html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
-                html = html.replace(/^### (.*$)/gim, '<h3 class="text-lg font-bold mt-5 mb-2 text-white">$1</h3>');
-                html = html.replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-6 mb-3 text-white">$2</h2>');
-                html = html.replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mt-7 mb-4 text-white">$1</h1>');
-                html = html.replace(/^\- (.*$)/gim, '<li>$1</li>');
-                html = html.replace(/(<li>.*<\/li>)/s, '<ul class="list-disc pl-5 my-2">$1</ul>');
-                html = html.replace(/\n/g, '<br>');
-                html = html.replace(/<br><br>/g, '</p><p>');
-                return `<p>${html}</p>`;
-            }
+                return `<p>${html.replace(/\n/g, '<br>')}</p>`;
+            },
+            openEmojiModal: () => {}
         };
 
         App.UI = {
             toggleMobileSidebar: function() {
                 const sidebar = document.getElementById('sidebar');
-                const overlay = document.getElementById('sidebar-overlay');
-                if (sidebar.classList.contains('-translate-x-full')) {
-                    sidebar.classList.remove('-translate-x-full');
-                    overlay.classList.remove('hidden');
-                } else {
-                    sidebar.classList.add('-translate-x-full');
-                    overlay.classList.add('hidden');
-                }
+                sidebar.classList.toggle('-translate-x-full');
             },
-            autoResizeTextarea: function() {
-                const input = document.getElementById('message-input');
-                input.style.height = 'auto';
-                input.style.height = Math.min(input.scrollHeight, 200) + 'px';
-                App.Chat.toggleSendButton();
-            },
-            copyCode: function(btn, blockId) {
-                const codeElement = document.getElementById(blockId);
-                if (!codeElement) return;
-                const text = codeElement.textContent || codeElement.innerText;
-                document.execCommand ? (() => {
-                    const ta = document.createElement("textarea");
-                    ta.value = text;
-                    document.body.appendChild(ta);
-                    ta.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(ta);
-                    const span = btn.querySelector('span');
-                    const originalText = span.innerText;
-                    span.innerText = 'Скопировано!';
-                    btn.classList.add('text-green-400');
-                    setTimeout(() => { span.innerText = originalText; btn.classList.remove('text-green-400'); }, 2000);
-                })() : navigator.clipboard.writeText(text).then(() => {
-                    const span = btn.querySelector('span');
-                    const originalText = span.innerText;
-                    span.innerText = 'Скопировано!';
-                    btn.classList.add('text-green-400');
-                    setTimeout(() => { span.innerText = originalText; btn.classList.remove('text-green-400'); }, 2000);
-                });
-            },
-            downloadCode: function(blockId, lang) {
-                const codeElement = document.getElementById(blockId);
-                if (!codeElement) return;
-                let ext = lang.toLowerCase();
-                if (ext === 'python') ext = 'py';
-                if (ext === 'javascript') ext = 'js';
-                if (ext === 'typescript') ext = 'ts';
-                if (ext === 'markdown') ext = 'md';
-                if (ext === 'text' || ext === 'txt') ext = 'txt';
-                const text = codeElement.textContent || codeElement.innerText;
-                const blob = new Blob([text], { type: "text/plain"});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `altron_file.${ext}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
+            autoResizeTextarea: function() {}
         };
 
-        document.addEventListener('DOMContentLoaded', () => { App.init(); });
+        document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
 </html>
