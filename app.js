@@ -105,12 +105,20 @@ App.Settings = {
         // прямо в HTML-атрибут: анимация не рендерилась (показывалась дефолтная
         // иконка/эмодзи браузера), а из-за огромного атрибута рядом «плыла» вёрстка
         // (в т.ч. подпись под аватаркой). Ниже — правильная, надёжная версия.
+        // ВРЕМЕННАЯ ДИАГНОСТИКА: если что-то ломается, вместо тишины показываем
+        // маленькую красную подпись прямо в интерфейсе — так проблему видно
+        // на телефоне без открытия консоли разработчика.
+        const showError = (code) => {
+            container.innerHTML = '<span style="font-size:9px;line-height:1;color:#f87171;font-family:monospace;">' + code + '</span>';
+        };
+
         let parsedData = animationData;
         if (typeof animationData === 'string') {
             try {
                 parsedData = JSON.parse(animationData);
             } catch (e) {
                 console.error('Некорректный JSON Lottie-анимации:', e);
+                showError('JSON!');
                 return;
             }
         }
@@ -121,10 +129,15 @@ App.Settings = {
             player.setAttribute('loop', '');
             player.style.width = size;
             player.style.height = size;
+            player.addEventListener('error', () => showError('RENDER!'));
+            container.innerHTML = '';
             container.appendChild(player);
             try {
                 player.load(parsedData);
-            } catch (e) { console.error('Ошибка рендера Lottie:', e); }
+            } catch (e) {
+                console.error('Ошибка рендера Lottie:', e);
+                showError('LOAD!');
+            }
         };
 
         // Гарантированно ждём регистрации <lottie-player>, а не полагаемся на то,
@@ -132,9 +145,17 @@ App.Settings = {
         if (customElements.get('lottie-player')) {
             createAndLoad();
         } else {
-            customElements.whenDefined('lottie-player').then(createAndLoad).catch(err => {
+            let resolved = false;
+            customElements.whenDefined('lottie-player').then(() => {
+                resolved = true;
+                createAndLoad();
+            }).catch(err => {
                 console.error('lottie-player так и не зарегистрировался:', err);
+                showError('DEF!');
             });
+            // Если скрипт с CDN не долетел за 4 сек (заблокирован/нет сети) —
+            // явно показываем это, а не молчим вечно.
+            setTimeout(() => { if (!resolved) showError('CDN!'); }, 4000);
         }
     },
     handleAvatarSelect: function(e) {
